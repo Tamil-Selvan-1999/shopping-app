@@ -1,0 +1,200 @@
+[
+  {
+    "index": 0,
+    "isActive": true,
+    "price": "$2,727.33",
+    "picture": "/default.jpg",
+    "productColor": "blue",
+    "name": "Eula Horne",
+    "company": "THREDZ",
+    "address": "275 Hendrickson Place, Wintersburg, Wisconsin, 5829",
+    "about": "Commodo dolor consequat cillum Lorem consequat laboris non ipsum eu nostrud nulla. Esse laboris deserunt ullamco aliquip in laboris labore. In qui officia ex aute consequat incididunt non tempor. Lorem aliqua aliqua Lorem non adipisicing officia amet voluptate mollit dolore aliquip ullamco amet anim. Consequat tempor nisi aute aliqua mollit esse est deserunt nostrud cupidatat. Eiusmod quis ad anim cupidatat sint fugiat culpa nostrud et proident.\r\n",
+    "registered": "2021-12-01T05:05:12-06:30",
+    "latitude": 18.584781,
+    "longitude": 60.883439,
+    "tags": [
+      "exercitation",
+      "laboris",
+      "veniam",
+      "pariatur",
+      "ex",
+      "enim",
+      "sit"
+    ],
+    "recommemded": [
+      {
+        "id": 0,
+        "name": "Patty Steele"
+      },
+      {
+        "id": 1,
+        "name": "Dunlap Monroe"
+      },
+      {
+        "id": 2,
+        "name": "Kenya Marquez"
+      }
+    ]
+  },
+  {
+    "index": 1,
+    "isActive": true,
+    "price": "$3,949.08",
+    "picture": "/default.jpg",
+    "productColor": "brown",
+    "name": "Bessie Rosario",
+    "company": "ANIMALIA",
+    "address": "856 Columbia Street, Curtice, Guam, 3665",
+    "about": "Sint commodo do fugiat dolor eu aute fugiat. Ea nisi aliqua aliqua velit duis laborum qui amet in. Et qui qui dolore do nisi ad reprehenderit. Amet tempor pariatur pariatur velit enim dolore aliqua. Id quis laborum proident ut reprehenderit elit proident ullamco veniam adipisicing pariatur officia magna. Sit nostrud ea duis cillum. Et consectetur dolore aliquip ipsum ut minim Lorem cupidatat proident.\r\n",
+    "registered": "2023-10-02T05:55:21-06:30",
+    "latitude": 0.339862,
+    "longitude": -42.531592,
+    "tags": ["enim", "non", "fugiat", "irure", "ut", "excepteur", "ipsum"],
+    "recommemded": [
+      {
+        "id": 0,
+        "name": "Geneva Mooney"
+      },
+      {
+        "id": 1,
+        "name": "Mccullough Randolph"
+      },
+      {
+        "id": 2,
+        "name": "Goodman Burnett"
+      }
+    ]
+  },
+  {
+    "index": 2,
+    "isActive": false,
+    "price": "$3,001.47",
+    "picture": "/default.jpg",
+    "productColor": "green",
+    "name": "Keisha Holcomb",
+    "company": "ZOARERE",
+    "address": "241 Hudson Avenue, Gorst, Nebraska, 4265",
+    "about": "Minim et magna ad exercitation ut aute dolore magna Lorem tempor anim. Qui eiusmod nulla exercitation cupidatat officia nostrud mollit proident exercitation minim magna. Nostrud enim nulla occaecat consequat incididunt anim non enim ad ad fugiat labore proident. Voluptate aliqua laborum elit non ea commodo. Pariatur voluptate sunt dolor consequat anim. Do exercitation nostrud excepteur et irure eiusmod culpa.\r\n",
+    "registered": "2016-11-19T07:55:27-06:30",
+    "latitude": -22.272141,
+    "longitude": -135.771696,
+    "tags": ["deserunt", "aliquip", "id", "duis", "nisi", "ad", "duis"],
+    "recommemded": [
+      {
+        "id": 0,
+        "name": "Bennett Jarvis"
+      },
+      {
+        "id": 1,
+        "name": "Gillespie Stokes"
+      },
+      {
+        "id": 2,
+        "name": "Alejandra Perez"
+      }
+    ]
+  },
+  {
+    "index": 3,
+    "isActive": false,
+    "price": "$3,622.56",
+    "picture": "/default.jpg",
+    "productColor": "blue",
+    "name": "Terrie Wolfe",
+    "company": "ZILLAR",
+    "address": "871 Lafayette Avenue, Hatteras, Washington, 5642",
+    "about": "Esse laboris sit aute mollit quis duis dolore non. Cupidatat laborum aliquip labore proident. Dolor aute reprehenderit ipsum et labore consectetur nisi.\r\n",
+    "registered": "2023-06-03T12:47:09-06:30",
+    "latitude": 32.086643,
+    "longitude": 125.992095,
+    "tags": ["eu", "adipisicing", "enim", "sit", "do", "Lorem", "nisi"],
+    "recommemded": [
+      {
+        "id": 0,
+        "name": "Felecia Garrison"
+      },
+      {
+        "id": 1,
+        "name": "Castaneda Hudson"
+      },
+      {
+        "id": 2,
+        "name": "Gardner Lloyd"
+      }
+    ]
+  },
+  {
+    "index": 4,
+    "isActive": false,
+    "price": "$2,559.17",
+    "picture": "/default.jpg",
+    "productColor": "blue",
+    "name": "Daniel Ramos",
+    "company": "BEDLAM",
+    "address": "335 Woods Place, Cherokee, Mississippi, 728",
+    "about": "Mollit laboris eiusmod eiusmod ad culpa ipsum quis. Officia fugiat sunt aliqua est esse adipisicing mollit ex officia culpa irure aliqua. Non amet aliqua labore qui eiusmod voluptate excepteur id nostrud fugiat nulla est ad. Aliquip ad adipisicing et velit tempor veniam est irure anim qui cillum.\r\n",
+    "registered": "2020-05-09T11:53:04-06:30",
+    "latitude": 74.280954,
+    "longitude": -110.108188,
+    "tags": [
+      "consectetur",
+      "eiusmod",
+      "non",
+      "amet",
+      "consectetur",
+      "aliqua",
+      "in"
+    ],
+    "recommemded": [
+      {
+        "id": 0,
+        "name": "Juliette Donaldson"
+      },
+      {
+        "id": 1,
+        "name": "Jordan Mays"
+      },
+      {
+        "id": 2,
+        "name": "Traci Ratliff"
+      }
+    ]
+  },
+  {
+    "index": 5,
+    "isActive": false,
+    "price": "$2,517.95",
+    "picture": "/default.jpg",
+    "productColor": "blue",
+    "name": "Minerva Chavez",
+    "company": "AMTAS",
+    "address": "852 Seigel Street, Chesapeake, Delaware, 6743",
+    "about": "Deserunt et occaecat do ea qui exercitation. Elit ullamco enim ea culpa aliqua tempor aliquip aute. Dolore dolor officia deserunt sint reprehenderit id minim fugiat consectetur excepteur irure ullamco ipsum sint.\r\n",
+    "registered": "2016-09-18T05:31:43-06:30",
+    "latitude": 74.23199,
+    "longitude": 115.615933,
+    "tags": [
+      "sunt",
+      "sint",
+      "quis",
+      "excepteur",
+      "deserunt",
+      "laborum",
+      "anim"
+    ],
+    "recommemded": [
+      {
+        "id": 0,
+        "name": "Adams Reese"
+      },
+      {
+        "id": 1,
+        "name": "Mara Haley"
+      },
+      {
+        "id": 2,
+        "name": "Langley Morrow"
+      }
+    ]
+  }
+]
