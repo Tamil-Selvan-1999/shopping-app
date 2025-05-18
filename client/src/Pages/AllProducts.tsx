@@ -1,12 +1,25 @@
 import { useState } from "react";
 import { connect } from "react-redux";
 import { ViewAllProducts } from "../actions";
-import { AllProductsProps, AppDispatch, state } from "../interface/interface";
+import {
+  AllProductsProps,
+  AppDispatch,
+  ProductState,
+  state,
+} from "../interface/interface";
 
 function AllProducts({ productData, getAllProducts }: AllProductsProps) {
-  const [state, setState] = useState({
+  const [state, setState] = useState<ProductState>({
     showModal: false,
+    selectedProduct: null,
   });
+
+  const closeModal = () => {
+    setState({
+      showModal: false,
+      selectedProduct: null,
+    });
+  };
 
   return (
     <div className="container text-center my-5">
@@ -35,7 +48,13 @@ function AllProducts({ productData, getAllProducts }: AllProductsProps) {
                       <button
                         type="button"
                         className="btn btn-primary m-1"
-                        onClick={() => setState({ ...state, showModal: true })}
+                        onClick={() =>
+                          setState({
+                            ...state,
+                            showModal: true,
+                            selectedProduct: item,
+                          })
+                        }
                       >
                         See More
                       </button>
@@ -49,6 +68,39 @@ function AllProducts({ productData, getAllProducts }: AllProductsProps) {
           </div>
         </div>
       </div>
+      {state.showModal && (
+        <div className="modal fade show d-block" tabIndex={-1} role="dialog">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">{state.selectedProduct?.name}</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={closeModal}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <img
+                  src={state.selectedProduct?.picture}
+                  alt={state.selectedProduct?.name}
+                  className="img-fluid mb-3"
+                />
+                <p>{state.selectedProduct?.about}</p>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={closeModal}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

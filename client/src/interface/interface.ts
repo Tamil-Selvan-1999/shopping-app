@@ -1,5 +1,10 @@
 import store from "../store";
 
+export interface ProductState {
+  showModal: boolean;
+  selectedProduct: Product | null;
+}
+
 export interface Product {
   id: string;
   name: string;
