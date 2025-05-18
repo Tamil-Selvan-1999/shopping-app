@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Action } from "./interface/interface";
+import { Action, Product } from "../interface/interface";
 import { Dispatch } from "@reduxjs/toolkit";
 
 const url = "http://localhost:4000";
@@ -21,4 +21,19 @@ export const ViewAllProducts = () => {
       });
     }
   };
+};
+
+export const ViewProduct = (item: Product) => {
+  return (dispatch: Dispatch<Action>) =>
+    dispatch({
+      type: "VIEW_PRODUCT",
+      payload: item,
+    });
+};
+
+export const CloseProduct = () => {
+  return (dispatch: Dispatch<Action>) =>
+    dispatch({
+      type: "CLOSE_PRODUCT",
+    });
 };
