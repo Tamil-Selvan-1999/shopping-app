@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const { DATABASE_URL } = require("../config");
 
-mongoose.connect("mongodb://localhost:27017/items_data", {});
+mongoose.connect(DATABASE_URL, {});
 
 const recommendedSchema = new mongoose.Schema(
   {
@@ -14,7 +15,7 @@ const productSchema = new mongoose.Schema(
   {
     index: { type: Number, required: true },
     isActive: { type: Boolean, required: true },
-    price: { type: String, required: true }, // Keeping it as String because of the '$' symbol
+    price: { type: String, required: true },
     picture: { type: String, required: true },
     productColor: { type: String, required: true },
     name: { type: String, required: true },
@@ -28,7 +29,7 @@ const productSchema = new mongoose.Schema(
     recommemded: { type: [recommendedSchema], required: true },
   },
   { collection: "items" }
-); // Use actual collection name
+);
 
 const Product = mongoose.model("Product", productSchema);
 

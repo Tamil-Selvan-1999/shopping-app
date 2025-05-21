@@ -1,10 +1,12 @@
 const express = require("express");
-const item = require("./models/data");
 const cors = require("cors");
 const product_router = require("./routes/product_routes");
+const auth_router = require("./routes/auth_routes");
 
 const app = express();
-const PORT = 4000;
+const { PORT } = require("./config");
+
+app.use(express.json());
 
 app.use(cors());
 
@@ -13,6 +15,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/", product_router);
+app.use("/", auth_router);
 
 app.listen(PORT, (error) => {
   if (!error) {
