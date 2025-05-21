@@ -4,4 +4,4 @@ const results = dotenv.config();
 
 const { parsed: envs } = results;
 
-module.exports = envs;
+export default envs;
