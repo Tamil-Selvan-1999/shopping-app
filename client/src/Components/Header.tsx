@@ -6,6 +6,9 @@ function Header() {
           <span className="navbar-brand mb-0 h1 text-center">
             Shopping Website
           </span>
+          <button type="button" className="btn btn-primary btn-lg">
+            Login
+          </button>
         </div>
       </nav>
     </div>
