@@ -1,7 +1,7 @@
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 
-const results = dotenv.config();
+const result = dotenv.config();
 
-const { parsed: envs } = results;
+const envs = result.parsed as Record<string, string>;
 
 export default envs;

@@ -2,7 +2,9 @@ import express, { Request, Response, Router } from "express";
 import User from "../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import JWT_SECRET_KEY from "../config";
+import env from "../config";
+
+const JWT_SECRET_KEY = env.JWT_SECRET_KEY;
 
 const auth_router: Router = express.Router();
 
@@ -28,7 +30,7 @@ auth_router.post(
         return res.status(401).send({ msg: "Incorrect Credenrials" });
       }
 
-      const token = jwt.sign({ userId: data._id }, JWT_SECRET_KEY, {
+      const token = jwt.sign({ userId: data._id }, JWT_SECRET_KEY as any, {
         expiresIn: "1h",
       });
 

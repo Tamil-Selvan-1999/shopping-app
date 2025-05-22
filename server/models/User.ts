@@ -1,6 +1,8 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const { DATABASE_URL } = require("../config");
+import env from "../config";
+
+const DATABASE_URL = env.DATABASE_URL;
 
 mongoose.connect(DATABASE_URL, {});
 
