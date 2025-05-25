@@ -50,7 +50,8 @@ export type Action =
 export type response = {
   status: "success" | "fail";
   msg: string;
-  data: {};
+  data: any;
 };
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

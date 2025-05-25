@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { LoginData, LoginState } from "../interface/interface";
-import axios from "axios";
+import apiCall from "../service/apiCall";
 
 const initialState: LoginState = {
   isAdmin: false,
@@ -14,10 +14,10 @@ export const loginAuthentication = createAsyncThunk<string, LoginData>(
   "login",
   async (data: LoginData, thunkAPI) => {
     try {
-      const response = await axios.post("http://localhost:4000/login", data);
-      return response.data.data;
+      const response = await apiCall.post("login", data);
+      return response.data.token;
     } catch (err: any) {
-      return thunkAPI.rejectWithValue(err.msg || "Failed to login");
+      return thunkAPI.rejectWithValue(err.message || "Failed to login");
     }
   }
 );
@@ -28,7 +28,7 @@ const loginSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(loginAuthentication.pending, (state, action) => {
+      .addCase(loginAuthentication.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
@@ -41,7 +41,7 @@ const loginSlice = createSlice({
           state.isLoggedIn = true;
         }
       )
-      .addCase(loginAuthentication.rejected, (state, action) => {
+      .addCase(loginAuthentication.rejected, (state) => {
         state.loading = false;
         state.error = "Unable to login";
       });

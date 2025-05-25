@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
 import { Product, ProductState } from "../interface/interface";
+import apiCall from "../service/apiCall";
 
 const initialState: ProductState = {
   items: [],
@@ -12,8 +12,8 @@ export const fetchAllProducts = createAsyncThunk<Product[]>(
   "product/fetchAllProducts",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get("http://localhost:4000/products");
-      return response.data.data;
+      const response = await apiCall.get("products");
+      return response.data;
     } catch (err: any) {
       return thunkAPI.rejectWithValue("Failed to fetch products");
     }
