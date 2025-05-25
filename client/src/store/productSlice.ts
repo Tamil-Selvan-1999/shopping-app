@@ -13,11 +13,9 @@ export const fetchAllProducts = createAsyncThunk<Product[]>(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get("http://localhost:4000/products");
-      return response.data;
+      return response.data.data;
     } catch (err: any) {
-      return thunkAPI.rejectWithValue(
-        err.message || "Failed to fetch products"
-      );
+      return thunkAPI.rejectWithValue("Failed to fetch products");
     }
   }
 );

@@ -37,3 +37,27 @@ export const CloseProduct = () => {
       type: "CLOSE_PRODUCT",
     });
 };
+
+export const Login = (username: string, password: string) => {
+  return async (dispatch: Dispatch) => {
+    dispatch({
+      type: "LOGIN",
+      payload: { username: username, password: password },
+    });
+    try {
+      const response = await axios.post(`${url}/login`, {
+        username: username,
+        password: password,
+      });
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: response.data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: "LOGIN_FAILURE",
+        error: error.message || "Failed to login",
+      });
+    }
+  };
+};

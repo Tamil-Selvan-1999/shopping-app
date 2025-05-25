@@ -15,29 +15,39 @@ auth_router.post(
       const { username, password } = req.body;
 
       if (!username || !password) {
-        return res.status(400).send({ msg: "Invalid data" });
+        return res
+          .status(400)
+          .send({ status: "fail", msg: "Invalid data", data: {} });
       }
 
       const data = await User.findOne({ username });
 
       if (!data) {
-        return res.status(404).send({ msg: "User not found" });
+        return res
+          .status(404)
+          .send({ status: "fail", msg: "User not found", data: {} });
       }
 
       const pwdMatch = await bcrypt.compare(password, data.password);
 
       if (!pwdMatch) {
-        return res.status(401).send({ msg: "Incorrect Credenrials" });
+        return res
+          .status(401)
+          .send({ status: "fail", msg: "Incorrect Credenrials", data: {} });
       }
 
       const token = jwt.sign({ userId: data._id }, JWT_SECRET_KEY as any, {
         expiresIn: "1h",
       });
 
-      return res.status(200).json(token);
+      return res
+        .status(200)
+        .send({ status: "success", msg: "Login success", data: { token } });
     } catch (error: any) {
       console.error(error);
-      return res.status(500).send({ msg: "Internal Server Error" });
+      return res
+        .status(500)
+        .send({ status: "fail", msg: "Internal Server Error", data: {} });
     }
   }
 );
