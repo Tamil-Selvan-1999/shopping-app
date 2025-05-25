@@ -21,22 +21,22 @@ function AllProducts() {
 
   return (
     <div className="container text-center my-5">
-      <button
-        type="button"
-        className="btn btn-primary btn-lg"
-        onClick={handleFetchProducts}
-      >
-        Click here to see all products
-      </button>
-
-      {error && <p>{error}</p>}
+      {!isLoading && (
+        <button
+          type="button"
+          className="btn btn-primary btn-lg"
+          onClick={handleFetchProducts}
+        >
+          Click here to see all products
+        </button>
+      )}
 
       {!isLoading && (
         <div className="container my-5">
-          <div className="btn-group" role="group" aria-label="button group">
-            <div className="row row-cols-1 row-cols-md-3 g-4">
-              {productData && productData.length > 0 ? (
-                productData.map((item, index) => (
+          {productData && productData.length > 0 ? (
+            <div className="btn-group" role="group" aria-label="button group">
+              <div className="row row-cols-1 row-cols-md-3 g-4">
+                {productData.map((item, index) => (
                   <div className="col" key={index}>
                     <div className="card h-100">
                       <img
@@ -59,18 +59,20 @@ function AllProducts() {
                       </div>
                     </div>
                   </div>
-                ))
-              ) : (
-                <h3>No items</h3>
-              )}
+                ))}
+              </div>
             </div>
-          </div>
+          ) : error ? (
+            <h3>{error}</h3>
+          ) : (
+            <h3>No items</h3>
+          )}
         </div>
       )}
 
       {isLoading && (
         <div className="spinner-border" role="status">
-          <span className="sr-only">Loading...</span>
+          <span className="visually-hidden">Loading...</span>
         </div>
       )}
 
