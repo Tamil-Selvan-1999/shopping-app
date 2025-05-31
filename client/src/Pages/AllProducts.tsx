@@ -1,5 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllProducts } from "../store/productSlice";
+import {
+  fetchAllProducts,
+  toggleProductActivation,
+} from "../store/productSlice";
 import { viewProduct, closeProduct } from "../store/modalSlice";
 import { Product, RootState, AppDispatch } from "../interface/interface";
 
@@ -14,10 +17,13 @@ function AllProducts() {
   const { showModal, selectedProduct } = useSelector(
     (state: RootState) => state.modal
   );
+  const { isLoggedIn } = useSelector((state: RootState) => state.login);
 
   const handleView = (item: Product) => dispatch(viewProduct(item));
   const handleClose = () => dispatch(closeProduct());
   const handleFetchProducts = () => dispatch(fetchAllProducts());
+  const handleToggleChange = (item: Product) =>
+    dispatch(toggleProductActivation(item));
 
   return (
     <div className="container text-center my-5">
@@ -95,6 +101,10 @@ function AllProducts() {
                   className="img-fluid mb-3"
                 />
                 <p>{selectedProduct.about}</p>
+                <p>Address: {selectedProduct.address}</p>
+                <p>Color: {selectedProduct.productColor}</p>
+                <p>Company: {selectedProduct.company}</p>
+                <p>Tags: {selectedProduct.tags.toString()}</p>
               </div>
               <div className="modal-footer">
                 <button
@@ -104,6 +114,15 @@ function AllProducts() {
                 >
                   Close
                 </button>
+                {isLoggedIn && (
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => handleToggleChange(selectedProduct)}
+                  >
+                    {selectedProduct.isActive ? "Deactivate" : "Activate"}
+                  </button>
+                )}
               </div>
             </div>
           </div>

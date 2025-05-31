@@ -47,7 +47,7 @@ product_router.post(
 
       return res
         .status(200)
-        .send({ status: "success", msg: `Updated ${data.name}`, data: {} });
+        .send({ status: "success", msg: `Updated ${data.name}`, data: data });
     } catch (error) {
       console.error(error);
       return res

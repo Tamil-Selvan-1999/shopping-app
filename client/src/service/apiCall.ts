@@ -14,7 +14,17 @@ const apiCall = {
   },
   post: async (url: string, data: any) => {
     try {
-      const res = await axios.post(base_url + url, data);
+      const token = localStorage.getItem("token");
+      let res;
+      if (token) {
+        res = await axios.post(base_url + url, data, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } else {
+        res = await axios.post(base_url + url, data);
+      }
       return apiSuccess(res.data);
     } catch (error: any) {
       return apiError(error);

@@ -2,10 +2,19 @@ import store from "../store/store";
 
 export interface Product {
   id: string;
+  index: number;
   name: string;
   picture: string;
   about: string;
   isActive: boolean;
+  productColor: string;
+  company: string;
+  address: string;
+  registered: Date;
+  latitude: number;
+  longitude: number;
+  tags: string[];
+  isDue: boolean;
 }
 
 export interface ProductState {
@@ -17,6 +26,8 @@ export interface ProductState {
 export interface ModalState {
   showModal: boolean;
   selectedProduct: Product | null;
+  isLoading: boolean;
+  error: string | null;
 }
 
 export interface LoginData {
@@ -26,7 +37,6 @@ export interface LoginData {
 
 export interface LoginState {
   isAdmin: boolean;
-  user_token: string | null;
   isLoggedIn: boolean;
   loading: boolean;
   error: string | null;

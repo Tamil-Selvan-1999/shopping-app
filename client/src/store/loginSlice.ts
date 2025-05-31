@@ -5,7 +5,6 @@ import apiCall from "../service/apiCall";
 const initialState: LoginState = {
   isAdmin: false,
   isLoggedIn: false,
-  user_token: null,
   loading: false,
   error: null,
 };
@@ -36,7 +35,7 @@ const loginSlice = createSlice({
         loginAuthentication.fulfilled,
         (state, action: PayloadAction<string>) => {
           state.loading = false;
-          state.user_token = action.payload;
+          localStorage.setItem("token", action.payload);
           state.isAdmin = true;
           state.isLoggedIn = true;
         }

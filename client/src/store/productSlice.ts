@@ -20,6 +20,19 @@ export const fetchAllProducts = createAsyncThunk<Product[]>(
   }
 );
 
+export const toggleProductActivation = createAsyncThunk<Product, Product>(
+  "product/toggleProductactivation",
+  async (item: Product, thunkAPI) => {
+    try {
+      const index = item.index;
+      const response = await apiCall.post(`products/${index}`, {});
+      return response.data;
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue("Failed to update");
+    }
+  }
+);
+
 const productSlice = createSlice({
   name: "product",
   initialState,
@@ -40,7 +53,15 @@ const productSlice = createSlice({
       .addCase(fetchAllProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      });
+      })
+      .addCase(
+        toggleProductActivation.fulfilled,
+        (state, action: PayloadAction<Product>) => {
+          state.items = state.items.map((item) =>
+            item.id === action.payload.id ? action.payload : item
+          );
+        }
+      );
   },
 });
 
