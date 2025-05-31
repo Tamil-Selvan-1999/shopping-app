@@ -21,6 +21,7 @@ export interface ProductState {
   items: Product[];
   loading: boolean;
   error: string | null;
+  isProductFetched: boolean;
 }
 
 export interface ModalState {

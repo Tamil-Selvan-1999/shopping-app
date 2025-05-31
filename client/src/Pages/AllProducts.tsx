@@ -12,6 +12,7 @@ function AllProducts() {
   const {
     items: productData,
     loading: isLoading,
+    isProductFetched,
     error,
   } = useSelector((state: RootState) => state.product);
   const { showModal, selectedProduct } = useSelector(
@@ -27,7 +28,7 @@ function AllProducts() {
 
   return (
     <div className="container text-center my-5">
-      {!isLoading && (
+      {!isLoading && !isProductFetched && (
         <button
           type="button"
           className="btn btn-primary btn-lg"
@@ -42,8 +43,8 @@ function AllProducts() {
           {productData && productData.length > 0 ? (
             <div className="btn-group" role="group" aria-label="button group">
               <div className="row row-cols-1 row-cols-md-3 g-4">
-                {productData.map((item, index) => (
-                  <div className="col" key={index}>
+                {productData.map((item) => (
+                  <div className="col" key={item.index}>
                     <div className="card h-100">
                       <img
                         src={item.picture}
@@ -87,25 +88,33 @@ function AllProducts() {
           <div className="modal-dialog" role="document">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">{selectedProduct.name}</h5>
+                {isLoggedIn ? (
+                  <h5 className="modal-title">{selectedProduct.name}</h5>
+                ) : (
+                  <h5 className="modal-title">Login Required</h5>
+                )}
                 <button
                   type="button"
                   className="btn-close"
                   onClick={handleClose}
                 ></button>
               </div>
-              <div className="modal-body">
-                <img
-                  src={selectedProduct.picture}
-                  alt={selectedProduct.name}
-                  className="img-fluid mb-3"
-                />
-                <p>{selectedProduct.about}</p>
-                <p>Address: {selectedProduct.address}</p>
-                <p>Color: {selectedProduct.productColor}</p>
-                <p>Company: {selectedProduct.company}</p>
-                <p>Tags: {selectedProduct.tags.toString()}</p>
-              </div>
+              {isLoggedIn ? (
+                <div className="modal-body">
+                  <img
+                    src={selectedProduct.picture}
+                    alt={selectedProduct.name}
+                    className="img-fluid mb-3"
+                  />
+                  <p>{selectedProduct.about}</p>
+                  <p>Address: {selectedProduct.address}</p>
+                  <p>Color: {selectedProduct.productColor}</p>
+                  <p>Company: {selectedProduct.company}</p>
+                  <p>Tags: {selectedProduct.tags.toString()}</p>
+                </div>
+              ) : (
+                <div className="modal-body">Please Login to view this</div>
+              )}
               <div className="modal-footer">
                 <button
                   type="button"
