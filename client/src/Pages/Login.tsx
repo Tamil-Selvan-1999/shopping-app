@@ -29,52 +29,45 @@ function Login() {
     }
   };
   return (
-    <>
-      <div className="container text-center">
-        <h3>Login Page</h3>
-        <div className="column">
-          <div className="row">
-            <div className="col-3">
-              <form
-                className="container-fluid"
-                onSubmit={(e) => onFormSubmit(e)}
-              >
-                <div className="form-group">
-                  <label htmlFor="username">User Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="username"
-                    name="username"
-                    aria-describedby="username"
-                    value={formData.username}
-                    onChange={(e) => onFormChange(e)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="password">Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={(e) => onFormChange(e)}
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={isDisabled}
-                >
-                  Submit
-                </button>
-              </form>
-            </div>
+    <div
+      className="d-flex justify-content-center align-items-center flex-column text-center"
+      style={{ minHeight: "100vh" }}
+    >
+      <h3 className="mb-4">Login Page</h3>
+      <div className="card p-4 shadow" style={{ minWidth: "300px" }}>
+        <form onSubmit={onFormSubmit}>
+          <div className="form-group mb-3 text-start">
+            <label htmlFor="username">User Name</label>
+            <input
+              type="text"
+              className="form-control"
+              id="username"
+              name="username"
+              value={formData.username}
+              onChange={onFormChange}
+            />
           </div>
-        </div>
+          <div className="form-group mb-3 text-start">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={onFormChange}
+            />
+          </div>
+          <button
+            type="submit"
+            className="btn btn-primary w-100"
+            disabled={isDisabled}
+          >
+            Submit
+          </button>
+        </form>
       </div>
-    </>
+    </div>
   );
 }
 

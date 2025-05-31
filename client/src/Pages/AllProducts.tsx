@@ -27,7 +27,10 @@ function AllProducts() {
     dispatch(toggleProductActivation(item));
 
   return (
-    <div className="container text-center my-5">
+    <div
+      className="d-flex justify-content-center align-items-center flex-column text-center"
+      style={{ minHeight: "80vh" }}
+    >
       {!isLoading && !isProductFetched && (
         <button
           type="button"
@@ -39,7 +42,7 @@ function AllProducts() {
       )}
 
       {!isLoading && (
-        <div className="container my-5">
+        <div className="container">
           {productData && productData.length > 0 ? (
             <div className="btn-group" role="group" aria-label="button group">
               <div className="row row-cols-1 row-cols-md-3 g-4">
