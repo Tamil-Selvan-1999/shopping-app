@@ -1,6 +1,7 @@
 import express, { Request, Response, Router } from "express";
 import Product from "../models/Product";
 import verifyToken from "../middleware/authMiddleware";
+import { logger } from "../logger";
 
 const product_router: Router = express.Router();
 
@@ -14,7 +15,7 @@ product_router.get(
       });
       res.status(200).send({ status: "success", msg: "success", data: data });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
       res.status(404).send({ status: "fail", msg: "Not found", data: {} });
     }
   }
@@ -49,7 +50,7 @@ product_router.post(
         .status(200)
         .send({ status: "success", msg: `Updated ${data.name}`, data: data });
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       return res
         .status(500)
         .send({ status: "fail", msg: "Internal Server Error", data: {} });

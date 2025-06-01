@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { authRequest } from "../interface/interface";
 import env from "../config";
+import { logger } from "../logger";
 
 const JWT_SECRET_KEY = env.JWT_SECRET_KEY;
 
@@ -28,7 +29,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
       res.status(500).send({ msg: "Internal server error" });
     }
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(500).send({ msg: "Internal server error" });
   }
 };

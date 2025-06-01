@@ -42,41 +42,43 @@ function AllProducts() {
       )}
 
       {!isLoading && (
-        <div className="container">
-          {productData && productData.length > 0 ? (
-            <div className="btn-group" role="group" aria-label="button group">
-              <div className="row row-cols-1 row-cols-md-3 g-4">
-                {productData.map((item) => (
-                  <div className="col" key={item.index}>
-                    <div className="card h-100">
-                      <img
-                        src={item.picture}
-                        className="card-img-top"
-                        alt={item.name}
-                      />
-                      <div className="card-body">
-                        <h2 className="card-title">{item.name}</h2>
-                        <p className="card-text">
-                          {item.about.substring(0, 40)}
-                        </p>
-                        <button
-                          type="button"
-                          className="btn btn-primary m-1"
-                          onClick={() => handleView(item)}
-                        >
-                          See More
-                        </button>
+        <div className="container mt-4">
+          <div className="card p-4 shadow-sm">
+            {productData && productData.length > 0 ? (
+              <div className="btn-group" role="group" aria-label="button group">
+                <div className="row row-cols-1 row-cols-md-3 g-4">
+                  {productData.map((item) => (
+                    <div className="col" key={item.index}>
+                      <div className="card h-100">
+                        <img
+                          src={item.picture}
+                          className="card-img-top"
+                          alt={item.name}
+                        />
+                        <div className="card-body">
+                          <h2 className="card-title">{item.name}</h2>
+                          <p className="card-text">
+                            {item.about.substring(0, 40)}
+                          </p>
+                          <button
+                            type="button"
+                            className="btn btn-primary m-1"
+                            onClick={() => handleView(item)}
+                          >
+                            See More
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : error ? (
-            <h3>{error}</h3>
-          ) : (
-            <h3>No items</h3>
-          )}
+            ) : error ? (
+              <h3>{error}</h3>
+            ) : (
+              <h3>No items</h3>
+            )}
+          </div>
         </div>
       )}
 
@@ -88,7 +90,7 @@ function AllProducts() {
 
       {showModal && selectedProduct && (
         <div className="modal fade show d-block" tabIndex={-1} role="dialog">
-          <div className="modal-dialog" role="document">
+          <div className="modal-dialog modal-sm" role="document">
             <div className="modal-content">
               <div className="modal-header">
                 {isLoggedIn ? (

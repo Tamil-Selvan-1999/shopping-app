@@ -3,6 +3,7 @@ import User from "../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import env from "../config";
+import { logger } from "../logger";
 
 const JWT_SECRET_KEY = env.JWT_SECRET_KEY;
 
@@ -44,7 +45,7 @@ auth_router.post(
         .status(200)
         .send({ status: "success", msg: "Login success", data: { token } });
     } catch (error: any) {
-      console.error(error);
+      logger.error(error);
       return res
         .status(500)
         .send({ status: "fail", msg: "Internal Server Error", data: {} });

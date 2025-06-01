@@ -60,7 +60,7 @@ const productSlice = createSlice({
         toggleProductActivation.fulfilled,
         (state, action: PayloadAction<Product>) => {
           state.items = state.items.map((item) =>
-            item.id === action.payload.id ? action.payload : item
+            item.index === action.payload.index ? action.payload : item
           );
         }
       );

@@ -6,19 +6,25 @@ function Header() {
   const { isLoggedIn } = useSelector((state: RootState) => state.login);
 
   return (
-    <div>
-      <nav className="navbar bg-body-tertiary">
-        <div className="container-fluid">
-          <Link to="/" className="navbar-brand mb-0 h1 text-center">
-            Shopping Website
-          </Link>
-          {isLoggedIn && <p>Welcome! You are logged in</p>}
-          <Link to="/login" className="btn btn-primary btn-lg">
-            Login
-          </Link>
+    <nav className="navbar bg-body-tertiary">
+      <div className="container-fluid d-flex justify-content-between align-items-center">
+        <Link to="/" className="navbar-brand mb-0 h1">
+          Shopping Website
+        </Link>
+        <div className="d-flex align-items-center gap-3">
+          {isLoggedIn && (
+            <span className="text-success mb-0">
+              Welcome! You are logged in
+            </span>
+          )}
+          {!isLoggedIn && (
+            <Link to="/login" className="btn btn-primary btn-sm">
+              Login
+            </Link>
+          )}
         </div>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
 }
 

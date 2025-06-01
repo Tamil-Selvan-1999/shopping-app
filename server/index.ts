@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
+import morgan from "morgan";
+import { logger, stream } from "./logger";
 import product_router from "./routes/product_routes";
 import auth_router from "./routes/auth_routes";
 import env from "./config";
@@ -7,6 +9,7 @@ import env from "./config";
 const PORT = env.PORT;
 
 const app = express();
+app.use(morgan("combined", { stream }));
 app.use(express.json());
 app.use(cors());
 
@@ -19,8 +22,8 @@ app.get("/", (req: Request, res: Response): void => {
 
 app.listen(PORT, (error: any) => {
   if (!error) {
-    console.log("Server is running and listening on port:" + PORT);
+    logger.info("Server is running and listening on port:" + PORT);
   } else {
-    console.log("Error:" + error);
+    logger.error("Error:" + error);
   }
 });
