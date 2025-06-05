@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import { RootState } from "../interface/interface";
 
 function Header() {
-  const { isLoggedIn } = useSelector((state: RootState) => state.login);
+  const { isLoggedIn, profile } = useSelector(
+    (state: RootState) => state.login
+  );
 
   return (
     <nav className="navbar bg-body-tertiary">
@@ -14,7 +16,7 @@ function Header() {
         <div className="d-flex align-items-center gap-3">
           {isLoggedIn && (
             <span className="text-success mb-0">
-              Welcome! You are logged in
+              Welcome {profile?.last_name}, {profile?.first_name}
             </span>
           )}
           {!isLoggedIn && (

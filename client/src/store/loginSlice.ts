@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { LoginData, LoginState } from "../interface/interface";
+import { LoginData, LoginState, UserProfile } from "../interface/interface";
 import apiCall from "../service/apiCall";
 
 const initialState: LoginState = {
@@ -7,19 +7,22 @@ const initialState: LoginState = {
   isLoggedIn: false,
   loading: false,
   error: null,
+  profile: null,
 };
 
-export const loginAuthentication = createAsyncThunk<string, LoginData>(
-  "login",
-  async (data: LoginData, thunkAPI) => {
-    try {
-      const response = await apiCall.post("login", data);
-      return response.data.token;
-    } catch (err: any) {
-      return thunkAPI.rejectWithValue(err.message || "Failed to login");
-    }
+export const loginAuthentication = createAsyncThunk<
+  { token: string; profile: UserProfile },
+  LoginData
+>("login", async (data: LoginData, thunkAPI) => {
+  try {
+    const loginResponse = await apiCall.post("login", data);
+    const token = loginResponse.data.token;
+    const response = await apiCall.get("profile", token);
+    return { token, profile: response.data };
+  } catch (err: any) {
+    return thunkAPI.rejectWithValue(err.message || "Failed to login");
   }
-);
+});
 
 const loginSlice = createSlice({
   name: "login",
@@ -33,11 +36,15 @@ const loginSlice = createSlice({
       })
       .addCase(
         loginAuthentication.fulfilled,
-        (state, action: PayloadAction<string>) => {
+        (
+          state,
+          action: PayloadAction<{ token: string; profile: UserProfile }>
+        ) => {
           state.loading = false;
-          localStorage.setItem("token", action.payload);
-          state.isAdmin = true;
+          localStorage.setItem("token", action.payload.token);
+          state.isAdmin = action.payload.profile.role === "admin";
           state.isLoggedIn = true;
+          state.profile = action.payload.profile;
         }
       )
       .addCase(loginAuthentication.rejected, (state) => {

@@ -91,7 +91,7 @@ auth_router.post(
   }
 );
 
-auth_router.post(
+auth_router.get(
   "/profile",
   verifyToken,
   async (req: Request, res: Response): Promise<any> => {
