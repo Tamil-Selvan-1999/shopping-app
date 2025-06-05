@@ -13,10 +13,14 @@ product_router.get(
       data = data.map((item: any) => {
         return { ...item, isDue: true };
       });
-      res.status(200).send({ status: "success", msg: "success", data: data });
+      return res
+        .status(200)
+        .send({ status: "success", msg: "success", data: data });
     } catch (error) {
       logger.error(error);
-      res.status(404).send({ status: "fail", msg: "Not found", data: {} });
+      return res
+        .status(404)
+        .send({ status: "fail", msg: "Not found", data: {} });
     }
   }
 );
