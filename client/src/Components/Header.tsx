@@ -1,11 +1,21 @@
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { RootState } from "../interface/interface";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { AppDispatch, RootState } from "../interface/interface";
+import { logout } from "../store/loginSlice";
 
 function Header() {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const navigate = useNavigate();
+
   const { isLoggedIn, profile } = useSelector(
     (state: RootState) => state.login
   );
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
 
   return (
     <nav className="navbar bg-body-tertiary">
@@ -19,7 +29,11 @@ function Header() {
               Welcome {profile?.last_name}, {profile?.first_name}
             </span>
           )}
-          {!isLoggedIn && (
+          {isLoggedIn ? (
+            <button className="btn btn-danger btn-sm" onClick={handleLogout}>
+              Logout
+            </button>
+          ) : (
             <Link to="/login" className="btn btn-primary btn-sm">
               Login
             </Link>
