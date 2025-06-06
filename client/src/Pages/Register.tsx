@@ -1,23 +1,24 @@
 import { FormEvent, ChangeEvent, useState } from "react";
-import { AppDispatch, LoginData } from "../interface/interface";
+import { AppDispatch, RegisterData } from "../interface/interface";
 import { useDispatch } from "react-redux";
-import { loginAuthentication } from "../store/loginSlice";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { registerAuthentication } from "../store/loginSlice";
+import { Link, useNavigate } from "react-router-dom";
 
-function Login() {
+function Register() {
   const dispatch = useDispatch<AppDispatch>();
 
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState<LoginData>({
+  const [formData, setFormData] = useState<RegisterData>({
     username: "",
     password: "",
+    first_name: "",
+    last_name: "",
   });
   const [isDisabled, setIsDisabled] = useState(true);
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(loginAuthentication(formData));
+    dispatch(registerAuthentication(formData));
     navigate("/");
   };
   const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +26,12 @@ function Login() {
       ...formData,
       [e.target.name]: e.target.value,
     });
-    if (formData.username.length > 0 && formData.password.length > 0) {
+    if (
+      formData.username.length > 0 &&
+      formData.password.length > 0 &&
+      formData.first_name.length > 0 &&
+      formData.last_name.length > 0
+    ) {
       setIsDisabled(false);
     }
   };
@@ -34,7 +40,7 @@ function Login() {
       className="d-flex justify-content-center align-items-center flex-column text-center"
       style={{ minHeight: "100vh" }}
     >
-      <h3 className="mb-4">Login Page</h3>
+      <h3 className="mb-4">Register Page</h3>
       <div className="card p-4 shadow" style={{ minWidth: "300px" }}>
         <form onSubmit={onFormSubmit}>
           <div className="form-group mb-3 text-start">
@@ -59,6 +65,28 @@ function Login() {
               onChange={onFormChange}
             />
           </div>
+          <div className="form-group mb-3 text-start">
+            <label htmlFor="first_name">First Name</label>
+            <input
+              type="text"
+              className="form-control"
+              id="first_name"
+              name="first_name"
+              value={formData.first_name}
+              onChange={onFormChange}
+            />
+          </div>
+          <div className="form-group mb-3 text-start">
+            <label htmlFor="username">Last Name</label>
+            <input
+              type="text"
+              className="form-control"
+              id="last_name"
+              name="last_name"
+              value={formData.last_name}
+              onChange={onFormChange}
+            />
+          </div>
           <button
             type="submit"
             className="btn btn-primary w-100"
@@ -69,10 +97,10 @@ function Login() {
         </form>
       </div>
       <p>
-        Click here to <Link to="/register">Register</Link>
+        Click here to <Link to="/login">Login</Link>
       </p>
     </div>
   );
 }
 
-export default Login;
+export default Register;

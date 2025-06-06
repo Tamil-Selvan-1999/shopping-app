@@ -3,6 +3,7 @@ import "./App.css";
 import Header from "./Components/Header";
 import AllProducts from "./Pages/AllProducts";
 import Login from "./Pages/Login";
+import Register from "./Pages/Register";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route index element={<AllProducts />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </BrowserRouter>
     </>
