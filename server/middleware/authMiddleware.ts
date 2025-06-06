@@ -5,15 +5,21 @@ import { logger } from "../logger";
 
 const JWT_SECRET_KEY = env.JWT_SECRET_KEY;
 
-const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
+const verifyToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const authHeader = req.header("Authorization");
     if (!authHeader) {
       res.status(401).send({ msg: "Invalid request" });
+      return;
     }
     const token: string = authHeader!.split(" ")[1];
     if (!token) {
       res.status(401).send({ msg: "Invalid request" });
+      return;
     }
     const decoded = jwt.verify(token, JWT_SECRET_KEY!);
     if (
@@ -25,10 +31,12 @@ const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
       next();
     } else {
       res.status(500).send({ msg: "Internal server error" });
+      return;
     }
   } catch (error) {
     logger.error(error);
     res.status(500).send({ msg: "Internal server error" });
+    return;
   }
 };
 

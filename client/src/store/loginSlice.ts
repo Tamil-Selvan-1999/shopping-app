@@ -18,19 +18,13 @@ const initialState: LoginState = {
 export const registerAuthentication = createAsyncThunk<
   { token: string; profile: UserProfile },
   RegisterData
->("register", async (data, thunkAPI) => {
+>("register", async (data: RegisterData, thunkAPI) => {
   try {
     await apiCall.post("register", data);
-
-    const loginResponse = await apiCall.post("login", {
-      username: data.username,
-      password: data.password,
-    });
-
+    const { username, password } = data;
+    const loginResponse = await apiCall.post("login", { username, password });
     const token = loginResponse.data.token;
-
     const profileResponse = await apiCall.get("profile", token);
-
     return { token, profile: profileResponse.data };
   } catch (err: any) {
     return thunkAPI.rejectWithValue(err.message || "Failed to register");
@@ -59,7 +53,7 @@ const loginSlice = createSlice({
       state.isLoggedIn = false;
       state.isAdmin = false;
       state.profile = null;
-      localStorage.removeItem("token");
+      localStorage.clear();
     },
   },
   extraReducers: (builder) => {
@@ -75,15 +69,16 @@ const loginSlice = createSlice({
           action: PayloadAction<{ token: string; profile: UserProfile }>
         ) => {
           state.loading = false;
+          localStorage.clear();
           localStorage.setItem("token", action.payload.token);
           state.isAdmin = action.payload.profile.role === "admin";
           state.isLoggedIn = true;
           state.profile = action.payload.profile;
         }
       )
-      .addCase(loginAuthentication.rejected, (state, action) => {
+      .addCase(loginAuthentication.rejected, (state) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = "Unable to login";
       })
       .addCase(registerAuthentication.pending, (state) => {
         state.loading = true;
@@ -96,15 +91,16 @@ const loginSlice = createSlice({
           action: PayloadAction<{ token: string; profile: UserProfile }>
         ) => {
           state.loading = false;
+          localStorage.clear();
           localStorage.setItem("token", action.payload.token);
           state.isAdmin = action.payload.profile.role === "admin";
           state.isLoggedIn = true;
           state.profile = action.payload.profile;
         }
       )
-      .addCase(registerAuthentication.rejected, (state, action) => {
+      .addCase(registerAuthentication.rejected, (state) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = "Unable to register";
       });
   },
 });

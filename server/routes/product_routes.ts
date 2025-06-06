@@ -32,7 +32,6 @@ product_router.post(
     try {
       const index = parseInt(req.params.index);
 
-      // Check if the index is a valid number
       if (isNaN(index)) {
         return res
           .status(400)

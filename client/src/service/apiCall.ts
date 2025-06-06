@@ -7,10 +7,8 @@ const apiCall = {
   get: async (url: string, overrideToken?: string) => {
     try {
       const token = overrideToken || localStorage.getItem("token");
-      const headers = overrideToken
-        ? { Authorization: `Bearer ${token}` }
-        : undefined;
-      const res = await axios.get(base_url + url, { headers });
+      const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+      const res = await axios.get(base_url + url, { headers: headers });
       return apiSuccess(res.data);
     } catch (error: any) {
       return apiError(error);
@@ -19,9 +17,7 @@ const apiCall = {
   post: async (url: string, data: any, overrideToken?: string) => {
     try {
       const token = overrideToken || localStorage.getItem("token");
-      const headers = overrideToken
-        ? { Authorization: `Bearer ${token}` }
-        : undefined;
+      const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
       const res = await axios.post(base_url + url, data, { headers });
       return apiSuccess(res.data);
     } catch (error: any) {
