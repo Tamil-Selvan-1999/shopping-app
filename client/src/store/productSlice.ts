@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { Product, ProductState } from "../interface/interface";
 import apiCall from "../service/apiCall";
+import { Bounce, toast } from "react-toastify";
 
 const initialState: ProductState = {
   items: [],
@@ -14,9 +15,14 @@ export const fetchAllProducts = createAsyncThunk<Product[]>(
   async (_, thunkAPI) => {
     try {
       const response = await apiCall.get("products");
+      if (response.status === "fail") {
+        return thunkAPI.rejectWithValue(response.msg);
+      }
       return response.data;
     } catch (err: any) {
-      return thunkAPI.rejectWithValue("Failed to fetch products");
+      const errorMsg =
+        err?.response?.data?.msg || err?.message || "Failed to fetch products";
+      return thunkAPI.rejectWithValue(errorMsg);
     }
   }
 );
@@ -27,9 +33,14 @@ export const toggleProductActivation = createAsyncThunk<Product, Product>(
     try {
       const index = item.index;
       const response = await apiCall.post(`products/${index}`, {});
+      if (response.status === "fail") {
+        return thunkAPI.rejectWithValue(response.msg);
+      }
       return response.data;
     } catch (err: any) {
-      return thunkAPI.rejectWithValue("Failed to update");
+      const errorMsg =
+        err?.response?.data?.msg || err?.message || "Failed to update";
+      return thunkAPI.rejectWithValue(errorMsg);
     }
   }
 );
@@ -55,6 +66,17 @@ const productSlice = createSlice({
       .addCase(fetchAllProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        toast.error(state.error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       })
       .addCase(
         toggleProductActivation.fulfilled,

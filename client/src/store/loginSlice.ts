@@ -6,6 +6,7 @@ import {
   UserProfile,
 } from "../interface/interface";
 import apiCall from "../service/apiCall";
+import { toast, Bounce } from "react-toastify";
 
 const initialState: LoginState = {
   isAdmin: false,
@@ -23,11 +24,17 @@ export const registerAuthentication = createAsyncThunk<
     await apiCall.post("register", data);
     const { username, password } = data;
     const loginResponse = await apiCall.post("login", { username, password });
+    if (loginResponse.status === "fail") {
+      return thunkAPI.rejectWithValue(loginResponse.msg);
+    }
     const token = loginResponse.data.token;
     const profileResponse = await apiCall.get("profile", token);
+    if (profileResponse.status === "fail") {
+      return thunkAPI.rejectWithValue(profileResponse.msg);
+    }
     return { token, profile: profileResponse.data };
   } catch (err: any) {
-    return thunkAPI.rejectWithValue(err.message || "Failed to register");
+    return thunkAPI.rejectWithValue(err.msg || "Failed to register");
   }
 });
 
@@ -39,9 +46,12 @@ export const loginAuthentication = createAsyncThunk<
     const loginResponse = await apiCall.post("login", data);
     const token = loginResponse.data.token;
     const response = await apiCall.get("profile", token);
+    if (response.status === "fail") {
+      return thunkAPI.rejectWithValue(response.msg);
+    }
     return { token, profile: response.data };
   } catch (err: any) {
-    return thunkAPI.rejectWithValue(err.message || "Failed to login");
+    return thunkAPI.rejectWithValue(err.msg || "Failed to login");
   }
 });
 
@@ -79,6 +89,17 @@ const loginSlice = createSlice({
       .addCase(loginAuthentication.rejected, (state) => {
         state.loading = false;
         state.error = "Unable to login";
+        toast.error(state.error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       })
       .addCase(registerAuthentication.pending, (state) => {
         state.loading = true;
@@ -101,6 +122,17 @@ const loginSlice = createSlice({
       .addCase(registerAuthentication.rejected, (state) => {
         state.loading = false;
         state.error = "Unable to register";
+        toast.error(state.error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       });
   },
 });

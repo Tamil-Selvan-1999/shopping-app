@@ -13,12 +13,14 @@ const verifyToken = async (
   try {
     const authHeader = req.header("Authorization");
     if (!authHeader) {
-      res.status(401).send({ msg: "Invalid request" });
+      res
+        .status(401)
+        .send({ status: "fail", msg: "Missing Authorization", data: {} });
       return;
     }
     const token: string = authHeader!.split(" ")[1];
     if (!token) {
-      res.status(401).send({ msg: "Invalid request" });
+      res.status(401).send({ status: "fail", msg: "Missing Token", data: {} });
       return;
     }
     const decoded = jwt.verify(token, JWT_SECRET_KEY!);
@@ -30,12 +32,14 @@ const verifyToken = async (
       req.user_id = (decoded as JwtPayload).userId;
       next();
     } else {
-      res.status(500).send({ msg: "Internal server error" });
+      res.status(401).send({ status: "fail", msg: "Invalid token", data: {} });
       return;
     }
   } catch (error) {
     logger.error(error);
-    res.status(500).send({ msg: "Internal server error" });
+    res
+      .status(500)
+      .send({ status: "fail", msg: "Internal server error", data: {} });
     return;
   }
 };

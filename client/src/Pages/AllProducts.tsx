@@ -18,7 +18,9 @@ function AllProducts() {
   const { showModal, selectedProduct } = useSelector(
     (state: RootState) => state.modal
   );
-  const { isLoggedIn } = useSelector((state: RootState) => state.login);
+  const { isLoggedIn, isAdmin } = useSelector(
+    (state: RootState) => state.login
+  );
 
   const handleView = (item: Product) => dispatch(viewProduct(item));
   const handleClose = () => dispatch(closeProduct());
@@ -128,7 +130,7 @@ function AllProducts() {
                 >
                   Close
                 </button>
-                {isLoggedIn && (
+                {isAdmin && (
                   <button
                     type="button"
                     className="btn btn-secondary"
