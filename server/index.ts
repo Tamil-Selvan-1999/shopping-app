@@ -5,6 +5,7 @@ import { logger, stream } from "./logger";
 import product_router from "./routes/product_routes";
 import auth_router from "./routes/auth_routes";
 import env from "./config";
+import connectDB from "./database";
 
 const PORT = env.PORT;
 
@@ -12,6 +13,12 @@ const app = express();
 app.use(morgan("combined", { stream }));
 app.use(express.json());
 app.use(cors());
+try {
+  connectDB();
+  logger.info("DB connected");
+} catch (error) {
+  logger.error("Db not connected - " + error);
+}
 
 app.use("/", product_router);
 app.use("/", auth_router);

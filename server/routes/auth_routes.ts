@@ -60,8 +60,8 @@ auth_router.post(
   "/register",
   async (req: Request, res: Response): Promise<any> => {
     try {
-      const { username, password, first_name, last_name } = req.body;
-      if (!username || !password || !first_name || !last_name) {
+      const { username, password, firstName, lastName } = req.body;
+      if (!username || !password || !firstName || !lastName) {
         return res
           .status(400)
           .send({ status: "fail", msg: "Incorrect data", data: {} });
@@ -76,8 +76,8 @@ auth_router.post(
       await User.create({
         username: username,
         password: hash_pwd,
-        first_name: first_name,
-        last_name: last_name,
+        firstName: firstName,
+        lastName: lastName,
         role: "customer",
       });
       return res
@@ -102,8 +102,8 @@ auth_router.get(
         status: "success",
         msg: "Success",
         data: {
-          first_name: user?.first_name,
-          last_name: user?.last_name,
+          firstName: user?.firstName,
+          lastName: user?.lastName,
           role: user?.role,
         },
       });

@@ -39,7 +39,7 @@ function AllProducts() {
           className="btn btn-primary btn-lg"
           onClick={handleFetchProducts}
         >
-          Click here to see all products
+          Click here to get the latest products
         </button>
       )}
 

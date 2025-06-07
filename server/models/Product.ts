@@ -1,38 +1,69 @@
 import mongoose from "mongoose";
-import env from "../config";
+import {
+  Dimensions,
+  Meta,
+  ProductDocument,
+  Review,
+} from "../interface/interface";
 
-const DATABASE_URL = env.DATABASE_URL;
-
-mongoose.connect(DATABASE_URL, {});
-
-const recommendedSchema = new mongoose.Schema(
+const ReviewSchema = new mongoose.Schema<Review>(
   {
-    id: Number,
-    name: String,
+    rating: Number,
+    comment: String,
+    date: Date,
+    reviewerName: String,
+    reviewerEmail: String,
   },
   { _id: false }
 );
 
-const productSchema = new mongoose.Schema(
+const DimensionsSchema = new mongoose.Schema<Dimensions>(
   {
-    index: { type: Number, required: true },
-    isActive: { type: Boolean, required: true },
-    price: { type: String, required: true },
-    picture: { type: String, required: true },
-    productColor: { type: String, required: true },
-    name: { type: String, required: true },
-    company: { type: String, required: true },
-    address: { type: String, required: true },
-    about: { type: String, required: true },
-    registered: { type: Date, required: true },
-    latitude: { type: Number, required: true },
-    longitude: { type: Number, required: true },
-    tags: { type: [String], required: true },
-    recommemded: { type: [recommendedSchema], required: true },
+    width: Number,
+    height: Number,
+    depth: Number,
   },
-  { collection: "items" }
+  { _id: false }
 );
 
-const Product = mongoose.model("Product", productSchema);
+const MetaSchema = new mongoose.Schema<Meta>(
+  {
+    createdAt: Date,
+    updatedAt: Date,
+    barcode: String,
+    qrCode: String,
+  },
+  { _id: false }
+);
+
+const ProductSchema = new mongoose.Schema<ProductDocument>(
+  {
+    productId: { type: Number, required: true, unique: true },
+    title: { type: String, required: true },
+    description: String,
+    category: String,
+    price: Number,
+    discountPercentage: Number,
+    rating: Number,
+    stock: Number,
+    tags: [String],
+    brand: String,
+    sku: String,
+    weight: Number,
+    dimensions: DimensionsSchema,
+    warrantyInformation: String,
+    shippingInformation: String,
+    availabilityStatus: String,
+    reviews: [ReviewSchema],
+    returnPolicy: String,
+    minimumOrderQuantity: Number,
+    meta: MetaSchema,
+    images: [String],
+    thumbnail: String,
+  },
+  { collection: "products_data" }
+);
+
+const Product = mongoose.model("Product", ProductSchema);
 
 export default Product;

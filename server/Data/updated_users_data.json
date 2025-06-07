@@ -1,0 +1,93 @@
+[
+  {
+    "username": "eleanor.collins@x.dummyjson.com",
+    "password": "admin",
+    "first_name": "Eleanor",
+    "last_name": "Collins",
+    "role": "customer"
+  },
+  {
+    "username": "lucas.gordon@x.dummyjson.com",
+    "password": "admin",
+    "first_name": "Lucas",
+    "last_name": "Gordon",
+    "role": "customer"
+  },
+  {
+    "username": "savannah.gomez@x.dummyjson.com",
+    "password": "admin",
+    "first_name": "Savannah",
+    "last_name": "Gomez",
+    "role": "customer"
+  },
+  {
+    "username": "christian.perez@x.dummyjson.com",
+    "password": "admin",
+    "first_name": "Christian",
+    "last_name": "Perez",
+    "role": "customer"
+  },
+  {
+    "username": "nicholas.bailey@x.dummyjson.com",
+    "password": "admin",
+    "first_name": "Nicholas",
+    "last_name": "Bailey",
+    "role": "customer"
+  },
+  {
+    "username": "alexander.jones@x.dummyjson.com",
+    "password": "admin",
+    "first_name": "Alexander",
+    "last_name": "Jones",
+    "role": "customer"
+  },
+  {
+    "username": "elijah.cruz@x.dummyjson.com",
+    "password": "admin",
+    "first_name": "Elijah",
+    "last_name": "Cruz",
+    "role": "customer"
+  },
+  {
+    "username": "avery.perez@x.dummyjson.com",
+    "password": "admin",
+    "first_name": "Avery",
+    "last_name": "Perez",
+    "role": "customer"
+  },
+  {
+    "username": "liam.garcia@x.dummyjson.com",
+    "password": "admin",
+    "first_name": "Liam",
+    "last_name": "Garcia",
+    "role": "customer"
+  },
+  {
+    "username": "ruby.andrews@x.dummyjson.com",
+    "password": "admin",
+    "first_name": "Ruby",
+    "last_name": "Andrews",
+    "role": "customer"
+  },
+  {
+    "username": "clara.berry@x.dummyjson.com",
+    "password": "admin",
+    "first_name": "Clara",
+    "last_name": "Berry",
+    "role": "customer"
+  },
+  {
+    "username": "benjamin.wilson@x.dummyjson.com",
+    "password": "admin",
+    "first_name": "Benjamin",
+    "last_name": "Wilson",
+    "role": "customer"
+  },
+  {
+    "username": "liam.smith@x.dummyjson.com",
+    "password": "admin",
+    "first_name": "Liam",
+    "last_name": "Smith",
+    "role": "customer"
+  }
+]

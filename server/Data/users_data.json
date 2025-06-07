@@ -1,0 +1,35 @@
+[
+  {
+    "_id": {
+      "$oid": "682dd3e02f8f47ddda35fc2e"
+    },
+    "username": "admin",
+    "password": "$2b$10$cKaFEDdOg/lnl4qPBd/6meUyJFag52BHnF5ldS4EXaMtWIKiK10Vi",
+    "first_name": "admin",
+    "last_name": "admin",
+    "role": "admin",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "684068b6668589657f688162"
+    },
+    "username": "tamil_selvan",
+    "password": "$2b$10$CYR5nXpA3ogDXKtMCf.iceIgXTERoNSG5ERlB.f9GiiYYuQWUHfDu",
+    "first_name": "Tamil",
+    "last_name": "Selvan",
+    "role": "customer",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6842ebcea8dbbcc4dc7c3d53"
+    },
+    "username": "nandakumar",
+    "password": "$2b$10$AJs5JEEBxFrbfnoiXJS1Tu5e0KJsTqYHGltIhUQQJWJPK5QGzd46i",
+    "first_name": "Nanda",
+    "last_name": "Kumar",
+    "role": "customer",
+    "__v": 0
+  }
+]

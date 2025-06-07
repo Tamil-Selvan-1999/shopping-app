@@ -1,0 +1,15 @@
+import mongoose from "mongoose";
+import env from "./config";
+import { logger } from "./logger";
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(env.DATABASE_URL);
+    logger.info("MongoDB connected.");
+  } catch (error) {
+    logger.error("MongoDB connection error:", error);
+    process.exit(1);
+  }
+};
+
+export default connectDB;
