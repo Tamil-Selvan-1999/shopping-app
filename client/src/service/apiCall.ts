@@ -1,14 +1,16 @@
 import axios from "axios";
 import { response } from "../interface/interface";
 
-const base_url = "http://localhost:4000/";
+import { BACKEND_URL } from "../config";
 
 const apiCall = {
   get: async (url: string, overrideToken?: string) => {
     try {
       const token = overrideToken || localStorage.getItem("token");
       const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
-      const res = await axios.get(base_url + url, { headers: headers });
+      const res = await axios.get(BACKEND_URL + "/" + url, {
+        headers: headers,
+      });
       return apiSuccess(res.data);
     } catch (error: any) {
       throw apiError(error);
@@ -18,7 +20,7 @@ const apiCall = {
     try {
       const token = overrideToken || localStorage.getItem("token");
       const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
-      const res = await axios.post(base_url + url, data, { headers });
+      const res = await axios.post(BACKEND_URL + "/" + url, data, { headers });
       return apiSuccess(res.data);
     } catch (error: any) {
       throw apiError(error);

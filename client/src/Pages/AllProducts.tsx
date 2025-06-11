@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllProducts } from "../store/productSlice";
 import { viewProduct, closeProduct } from "../store/modalSlice";
 import { Product, RootState, AppDispatch } from "../interface/interface";
+import { BACKEND_URL } from "../config";
 
 function AllProducts() {
   const dispatch = useDispatch<AppDispatch>();
@@ -46,7 +47,7 @@ function AllProducts() {
                     <div className="col" key={item.productId}>
                       <div className="card h-100">
                         <img
-                          src={item.thumbnail}
+                          src={BACKEND_URL + item.thumbnail}
                           className="card-img-top"
                           alt={item.title}
                         />
@@ -102,7 +103,7 @@ function AllProducts() {
               {isLoggedIn ? (
                 <div className="modal-body">
                   <img
-                    src={selectedProduct.thumbnail}
+                    src={BACKEND_URL + selectedProduct.thumbnail}
                     alt={selectedProduct.title}
                     className="img-fluid mb-3"
                   />

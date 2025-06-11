@@ -12,8 +12,8 @@ function Register() {
   const [formData, setFormData] = useState<RegisterData>({
     username: "",
     password: "",
-    first_name: "",
-    last_name: "",
+    firstName: "",
+    lastName: "",
   });
   const [isDisabled, setIsDisabled] = useState(true);
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -29,8 +29,8 @@ function Register() {
     if (
       formData.username.length > 0 &&
       formData.password.length > 0 &&
-      formData.first_name.length > 0 &&
-      formData.last_name.length > 0
+      formData.firstName.length > 0 &&
+      formData.lastName.length > 0
     ) {
       setIsDisabled(false);
     }
@@ -66,13 +66,13 @@ function Register() {
             />
           </div>
           <div className="form-group mb-3 text-start">
-            <label htmlFor="first_name">First Name</label>
+            <label htmlFor="firstName">First Name</label>
             <input
               type="text"
               className="form-control"
-              id="first_name"
-              name="first_name"
-              value={formData.first_name}
+              id="firstName"
+              name="firstName"
+              value={formData.firstName}
               onChange={onFormChange}
             />
           </div>
@@ -81,9 +81,9 @@ function Register() {
             <input
               type="text"
               className="form-control"
-              id="last_name"
-              name="last_name"
-              value={formData.last_name}
+              id="lastName"
+              name="lastName"
+              value={formData.lastName}
               onChange={onFormChange}
             />
           </div>
