@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import env from "../config";
 import { logger } from "../logger";
 import verifyToken from "../middleware/authMiddleware";
+import { faker } from "@faker-js/faker";
 
 const JWT_SECRET_KEY = env.JWT_SECRET_KEY;
 
@@ -79,6 +80,79 @@ auth_router.post(
         firstName: firstName,
         lastName: lastName,
         role: "customer",
+        age: faker.number.int({ min: 18, max: 60 }),
+        email: faker.internet.email(),
+        phone: `+${faker.number.int({
+          min: 1,
+          max: 998,
+        })} ${faker.string.numeric(3)}-${faker.string.numeric(
+          3
+        )}-${faker.string.numeric(4)}`,
+        gender: faker.helpers.arrayElement(["male", "female"]),
+        birthDate: faker.date.birthdate({ mode: "age", min: 18, max: 60 }),
+        image: faker.image.avatar(),
+        bloodGroup: faker.helpers.arrayElement(["A+", "B+", "O-", "AB+"]),
+        height: faker.number.float({ min: 150, max: 200 }),
+        weight: faker.number.float({ min: 45, max: 100 }),
+        eyeColor: faker.color.human(),
+        hair: {
+          color: faker.color.human(),
+          type: faker.helpers.arrayElement(["Straight", "Curly", "Wavy"]),
+        },
+        ip: faker.internet.ip(),
+        macAddress: faker.internet.mac(),
+        university: faker.company.name(),
+        address: {
+          address: faker.location.streetAddress(),
+          city: faker.location.city(),
+          state: faker.location.state(),
+          stateCode: faker.location.state({ abbreviated: true }),
+          postalCode: faker.location.zipCode(),
+          coordinates: {
+            lat: Number(faker.location.latitude()),
+            lng: Number(faker.location.longitude()),
+          },
+          country: faker.location.country(),
+        },
+        bank: {
+          cardExpire: `${faker.number
+            .int({ min: 1, max: 12 })
+            .toString()
+            .padStart(2, "0")}/${(
+            new Date().getFullYear() + faker.number.int({ min: 1, max: 5 })
+          )
+            .toString()
+            .slice(-2)}`,
+          cardNumber: faker.finance.creditCardNumber(),
+          cardType: faker.finance.creditCardIssuer(),
+          currency: "USD",
+          iban: faker.finance.iban(),
+        },
+        company: {
+          department: faker.commerce.department(),
+          name: faker.company.name(),
+          title: faker.person.jobTitle(),
+          address: {
+            address: faker.location.streetAddress(),
+            city: faker.location.city(),
+            state: faker.location.state(),
+            stateCode: faker.location.state({ abbreviated: true }),
+            postalCode: faker.location.zipCode(),
+            coordinates: {
+              lat: Number(faker.location.latitude()),
+              lng: Number(faker.location.longitude()),
+            },
+            country: faker.location.country(),
+          },
+        },
+        ein: faker.finance.accountNumber(9),
+        ssn: faker.number.int({ min: 100000000, max: 999999999 }).toString(),
+        userAgent: faker.internet.userAgent(),
+        crypto: {
+          coin: "Bitcoin",
+          wallet: faker.finance.ethereumAddress(),
+          network: "Ethereum (ERC20)",
+        },
       });
       return res
         .status(201)

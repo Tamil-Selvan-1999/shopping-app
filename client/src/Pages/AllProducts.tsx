@@ -1,8 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchAllProducts,
-  toggleProductActivation,
-} from "../store/productSlice";
+import { fetchAllProducts } from "../store/productSlice";
 import { viewProduct, closeProduct } from "../store/modalSlice";
 import { Product, RootState, AppDispatch } from "../interface/interface";
 
@@ -18,15 +15,11 @@ function AllProducts() {
   const { showModal, selectedProduct } = useSelector(
     (state: RootState) => state.modal
   );
-  const { isLoggedIn, isAdmin } = useSelector(
-    (state: RootState) => state.login
-  );
+  const { isLoggedIn } = useSelector((state: RootState) => state.login);
 
   const handleView = (item: Product) => dispatch(viewProduct(item));
   const handleClose = () => dispatch(closeProduct());
   const handleFetchProducts = () => dispatch(fetchAllProducts());
-  const handleToggleChange = (item: Product) =>
-    dispatch(toggleProductActivation(item));
 
   return (
     <div
@@ -50,17 +43,17 @@ function AllProducts() {
               <div className="btn-group" role="group" aria-label="button group">
                 <div className="row row-cols-1 row-cols-md-3 g-4">
                   {productData.map((item) => (
-                    <div className="col" key={item.index}>
+                    <div className="col" key={item.productId}>
                       <div className="card h-100">
                         <img
-                          src={item.picture}
+                          src={item.thumbnail}
                           className="card-img-top"
-                          alt={item.name}
+                          alt={item.title}
                         />
                         <div className="card-body">
-                          <h2 className="card-title">{item.name}</h2>
+                          <h2 className="card-title">{item.title}</h2>
                           <p className="card-text">
-                            {item.about.substring(0, 40)}
+                            {item.description.substring(0, 40)}
                           </p>
                           <button
                             type="button"
@@ -92,11 +85,11 @@ function AllProducts() {
 
       {showModal && selectedProduct && (
         <div className="modal fade show d-block" tabIndex={-1} role="dialog">
-          <div className="modal-dialog modal-sm" role="document">
+          <div className="modal-dialog" role="document">
             <div className="modal-content">
               <div className="modal-header">
                 {isLoggedIn ? (
-                  <h5 className="modal-title">{selectedProduct.name}</h5>
+                  <h5 className="modal-title">{selectedProduct.title}</h5>
                 ) : (
                   <h5 className="modal-title">Login Required</h5>
                 )}
@@ -109,15 +102,15 @@ function AllProducts() {
               {isLoggedIn ? (
                 <div className="modal-body">
                   <img
-                    src={selectedProduct.picture}
-                    alt={selectedProduct.name}
+                    src={selectedProduct.thumbnail}
+                    alt={selectedProduct.title}
                     className="img-fluid mb-3"
                   />
-                  <p>{selectedProduct.about}</p>
-                  <p>Address: {selectedProduct.address}</p>
-                  <p>Color: {selectedProduct.productColor}</p>
-                  <p>Company: {selectedProduct.company}</p>
-                  <p>Tags: {selectedProduct.tags.toString()}</p>
+                  <p>{selectedProduct.description}</p>
+                  <p>Category: {selectedProduct.category}</p>
+                  <p>Rating: {selectedProduct.rating}</p>
+                  <p>Brand: {selectedProduct.brand}</p>
+                  <p>Stock: {selectedProduct.stock}</p>
                 </div>
               ) : (
                 <div className="modal-body">Please Login to view this</div>
@@ -130,15 +123,6 @@ function AllProducts() {
                 >
                   Close
                 </button>
-                {isAdmin && (
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => handleToggleChange(selectedProduct)}
-                  >
-                    {selectedProduct.isActive ? "Deactivate" : "Activate"}
-                  </button>
-                )}
               </div>
             </div>
           </div>

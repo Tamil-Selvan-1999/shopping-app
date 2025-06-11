@@ -1,20 +1,49 @@
 import store from "../store/store";
 
+export interface Review {
+  rating: number;
+  comment: string;
+  date: Date;
+  reviewerName: string;
+  reviewerEmail: string;
+}
+
+export interface Dimensions {
+  width: number;
+  height: number;
+  depth: number;
+}
+
+export interface Meta {
+  createdAt: Date;
+  updatedAt: Date;
+  barcode: string;
+  qrCode: string;
+}
+
 export interface Product {
-  id: string;
-  index: number;
-  name: string;
-  picture: string;
-  about: string;
-  isActive: boolean;
-  productColor: string;
-  company: string;
-  address: string;
-  registered: Date;
-  latitude: number;
-  longitude: number;
+  productId: number;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+  discountPercentage: number;
+  rating: number;
+  stock: number;
   tags: string[];
-  isDue: boolean;
+  brand: string;
+  sku: string;
+  weight: number;
+  dimensions: Dimensions;
+  warrantyInformation: string;
+  shippingInformation: string;
+  availabilityStatus: string;
+  reviews: Review[];
+  returnPolicy: string;
+  minimumOrderQuantity: number;
+  meta: Meta;
+  images: string[];
+  thumbnail: string;
 }
 
 export interface ProductState {
@@ -39,14 +68,14 @@ export interface LoginData {
 export interface RegisterData {
   username: string;
   password: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface UserProfile {
-  first_name: string;
-  last_name: string;
-  role: "admin" | "customer";
+  firstName: string;
+  lastName: string;
+  role: "admin" | "customer" | "moderator";
 }
 
 export interface LoginState {

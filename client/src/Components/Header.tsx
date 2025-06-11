@@ -26,7 +26,7 @@ function Header() {
         <div className="d-flex align-items-center gap-3">
           {isLoggedIn && (
             <span className="text-success mb-0">
-              Welcome {profile?.last_name}, {profile?.first_name}
+              Welcome {profile?.lastName}, {profile?.firstName}
             </span>
           )}
           {isLoggedIn ? (
