@@ -84,6 +84,20 @@ const loginSlice = createSlice({
           state.isAdmin = action.payload.profile.role === "admin";
           state.isLoggedIn = true;
           state.profile = action.payload.profile;
+          toast.success(
+            `Welcome!!! ${state.profile.firstName}, ${state.profile.lastName}`,
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Bounce,
+            }
+          );
         }
       )
       .addCase(loginAuthentication.rejected, (state) => {
@@ -117,6 +131,20 @@ const loginSlice = createSlice({
           state.isAdmin = action.payload.profile.role === "admin";
           state.isLoggedIn = true;
           state.profile = action.payload.profile;
+          toast.success(
+            `Welcome!!! ${state.profile.firstName}, ${state.profile.lastName}.You are successfully registered.`,
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Bounce,
+            }
+          );
         }
       )
       .addCase(registerAuthentication.rejected, (state) => {

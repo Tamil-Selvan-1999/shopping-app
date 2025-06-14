@@ -3,6 +3,7 @@ import { fetchAllProducts } from "../store/productSlice";
 import { viewProduct, closeProduct } from "../store/modalSlice";
 import { Product, RootState, AppDispatch } from "../interface/interface";
 import { BACKEND_URL } from "../config";
+import { Link } from "react-router-dom";
 
 function AllProducts() {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,7 +28,7 @@ function AllProducts() {
       className="d-flex justify-content-center align-items-center flex-column text-center"
       style={{ minHeight: "80vh" }}
     >
-      {!isLoading && !isProductFetched && (
+      {!isLoading && !isProductFetched && isLoggedIn && (
         <button
           type="button"
           className="btn btn-primary btn-lg"
@@ -37,7 +38,13 @@ function AllProducts() {
         </button>
       )}
 
-      {!isLoading && (
+      {!isLoggedIn && (
+        <Link to="/login" className="btn btn-primary btn-sm">
+          Login
+        </Link>
+      )}
+
+      {!isLoading && isLoggedIn && (
         <div className="container mt-4">
           <div className="card p-4 shadow-sm">
             {productData && productData.length > 0 ? (
@@ -72,7 +79,7 @@ function AllProducts() {
             ) : error ? (
               <h3>{error}</h3>
             ) : (
-              <h3>No items</h3>
+              <h3>Click the button to get the latest products</h3>
             )}
           </div>
         </div>
