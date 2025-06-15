@@ -4,10 +4,12 @@ import { viewProduct, closeProduct } from "../store/modalSlice";
 import { Product, RootState, AppDispatch } from "../interface/interface";
 import { BACKEND_URL } from "../config";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+
+const PRODUCTS_PER_PAGE = 50;
 
 function AllProducts() {
   const dispatch = useDispatch<AppDispatch>();
-
   const {
     items: productData,
     loading: isLoading,
@@ -19,113 +21,191 @@ function AllProducts() {
   );
   const { isLoggedIn } = useSelector((state: RootState) => state.login);
 
+  const [currentPage, setCurrentPage] = useState(1);
+
   const handleView = (item: Product) => dispatch(viewProduct(item));
   const handleClose = () => dispatch(closeProduct());
   const handleFetchProducts = () => dispatch(fetchAllProducts());
 
-  return (
-    <div
-      className="d-flex justify-content-center align-items-center flex-column text-center"
-      style={{ minHeight: "80vh" }}
-    >
-      {!isLoading && !isProductFetched && isLoggedIn && (
-        <button
-          type="button"
-          className="btn btn-primary btn-lg"
-          onClick={handleFetchProducts}
-        >
-          Click here to get the latest products
-        </button>
-      )}
+  const totalPages = Math.ceil(productData.length / PRODUCTS_PER_PAGE);
+  const paginatedProducts = productData.slice(
+    (currentPage - 1) * PRODUCTS_PER_PAGE,
+    currentPage * PRODUCTS_PER_PAGE
+  );
 
-      {!isLoggedIn && (
-        <Link to="/login" className="btn btn-primary btn-sm">
-          Login
-        </Link>
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+  };
+
+  return (
+    <div className="container py-5">
+      <div className="text-center mb-4">
+        {!isLoading && !isProductFetched && isLoggedIn && (
+          <button
+            type="button"
+            className="btn btn-primary btn-lg"
+            onClick={handleFetchProducts}
+          >
+            Click here to get the latest products
+          </button>
+        )}
+
+        {!isLoggedIn && (
+          <Link to="/login" className="btn btn-outline-primary btn-sm">
+            Login to see products
+          </Link>
+        )}
+      </div>
+
+      {isLoading && (
+        <div className="text-center my-5">
+          <div className="spinner-border text-primary" role="status" />
+        </div>
       )}
 
       {!isLoading && isLoggedIn && (
-        <div className="container mt-4">
-          <div className="card p-4 shadow-sm">
-            {productData && productData.length > 0 ? (
-              <div className="btn-group" role="group" aria-label="button group">
-                <div className="row row-cols-1 row-cols-md-3 g-4">
-                  {productData.map((item) => (
-                    <div className="col" key={item.productId}>
-                      <div className="card h-100">
-                        <img
-                          src={BACKEND_URL + item.thumbnail}
-                          className="card-img-top"
-                          alt={item.title}
-                        />
-                        <div className="card-body">
-                          <h2 className="card-title">{item.title}</h2>
-                          <button
-                            type="button"
-                            className="btn btn-primary m-1"
-                            onClick={() => handleView(item)}
-                          >
-                            See More
-                          </button>
-                        </div>
-                      </div>
+        <>
+          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+            {paginatedProducts.length > 0 ? (
+              paginatedProducts.map((item) => (
+                <div className="col" key={item.productId}>
+                  <div className="card h-100 shadow-sm">
+                    <img
+                      src={BACKEND_URL + item.thumbnail}
+                      className="card-img-top"
+                      alt={item.title}
+                      style={{ objectFit: "cover", height: "200px" }}
+                    />
+                    <div className="card-body d-flex flex-column">
+                      <h5 className="card-title">{item.title}</h5>
+                      <button
+                        type="button"
+                        className="btn btn-primary mt-auto"
+                        onClick={() => handleView(item)}
+                      >
+                        See More
+                      </button>
                     </div>
-                  ))}
+                  </div>
+                </div>
+              ))
+            ) : error ? (
+              <div className="col">
+                <div className="alert alert-danger text-center">{error}</div>
+              </div>
+            ) : (
+              <div className="col">
+                <div className="alert alert-info text-center">
+                  No products found.
                 </div>
               </div>
-            ) : error ? (
-              <h3>{error}</h3>
-            ) : (
-              <h3>Click the button to get the latest products</h3>
             )}
           </div>
-        </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <nav className="mt-4 d-flex justify-content-center">
+              <ul className="pagination">
+                <li className={`page-item ${currentPage === 1 && "disabled"}`}>
+                  <button
+                    className="page-link"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                  >
+                    Previous
+                  </button>
+                </li>
+
+                {Array.from({ length: totalPages }, (_, idx) => idx + 1).map(
+                  (page) => (
+                    <li
+                      key={page}
+                      className={`page-item ${
+                        page === currentPage ? "active" : ""
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => handlePageChange(page)}
+                      >
+                        {page}
+                      </button>
+                    </li>
+                  )
+                )}
+
+                <li
+                  className={`page-item ${
+                    currentPage === totalPages && "disabled"
+                  }`}
+                >
+                  <button
+                    className="page-link"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                  >
+                    Next
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          )}
+        </>
       )}
 
-      {isLoading && (
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      )}
-
+      {/* Modal */}
       {showModal && selectedProduct && (
         <div className="modal fade show d-block" tabIndex={-1} role="dialog">
-          <div className="modal-dialog" role="document">
+          <div className="modal-dialog modal-lg" role="document">
             <div className="modal-content">
               <div className="modal-header">
-                {isLoggedIn ? (
-                  <h5 className="modal-title">{selectedProduct.title}</h5>
-                ) : (
-                  <h5 className="modal-title">Login Required</h5>
-                )}
+                <h5 className="modal-title">
+                  {isLoggedIn
+                    ? selectedProduct.title
+                    : "Login Required to View Product"}
+                </h5>
                 <button
                   type="button"
                   className="btn-close"
                   onClick={handleClose}
                 ></button>
               </div>
+
               {isLoggedIn ? (
-                <div className="modal-body">
-                  <img
-                    src={BACKEND_URL + selectedProduct.thumbnail}
-                    alt={selectedProduct.title}
-                    className="img-fluid mb-3"
-                  />
-                  <p>{selectedProduct.description}</p>
-                  <p>Category: {selectedProduct.category}</p>
-                  <p>Rating: {selectedProduct.rating}</p>
-                  <p>Brand: {selectedProduct.brand}</p>
-                  <p>Stock: {selectedProduct.stock}</p>
-                  <Link
-                    to={"/product/" + selectedProduct.productId}
-                    className="btn btn-primary btn-sm"
-                  >
-                    See More
-                  </Link>
+                <div className="modal-body row g-3">
+                  <div className="col-md-5">
+                    <img
+                      src={BACKEND_URL + selectedProduct.thumbnail}
+                      alt={selectedProduct.title}
+                      className="img-fluid rounded"
+                    />
+                  </div>
+                  <div className="col-md-7">
+                    <p className="mb-2">{selectedProduct.description}</p>
+                    <p className="mb-1">
+                      <strong>Category:</strong> {selectedProduct.category}
+                    </p>
+                    <p className="mb-1">
+                      <strong>Rating:</strong> {selectedProduct.rating} ★
+                    </p>
+                    <p className="mb-1">
+                      <strong>Brand:</strong> {selectedProduct.brand}
+                    </p>
+                    <p className="mb-1">
+                      <strong>Stock:</strong> {selectedProduct.stock}
+                    </p>
+                    <Link
+                      to={`/product/${selectedProduct.productId}`}
+                      className="btn btn-sm btn-outline-primary mt-2"
+                    >
+                      Go to Product Page
+                    </Link>
+                  </div>
                 </div>
               ) : (
-                <div className="modal-body">Please Login to view this</div>
+                <div className="modal-body text-center">
+                  Please log in to view product details.
+                </div>
               )}
+
               <div className="modal-footer">
                 <button
                   type="button"
