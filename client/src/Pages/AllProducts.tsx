@@ -116,6 +116,12 @@ function AllProducts() {
                   <p>Rating: {selectedProduct.rating}</p>
                   <p>Brand: {selectedProduct.brand}</p>
                   <p>Stock: {selectedProduct.stock}</p>
+                  <Link
+                    to={"/product/" + selectedProduct.productId}
+                    className="btn btn-primary btn-sm"
+                  >
+                    See More
+                  </Link>
                 </div>
               ) : (
                 <div className="modal-body">Please Login to view this</div>
