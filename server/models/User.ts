@@ -5,16 +5,16 @@ interface IUserDocument extends IUser, Document {}
 
 const UserSchema = new mongoose.Schema<IUserDocument>(
   {
-    userId: { type: Number, required: true, unique: true },
+    userId: { $type: Number, required: true, unique: true },
     firstName: String,
     lastName: String,
     maidenName: String,
     age: Number,
-    gender: { type: String, enum: ["male", "female", "other"] },
-    email: { type: String, unique: true, required: true },
+    gender: { $type: String, enum: ["male", "female", "other"] },
+    email: { $type: String, unique: true, required: true },
     phone: String,
-    username: { type: String, unique: true, required: true },
-    password: { type: String, required: true },
+    username: { $type: String, unique: true, required: true },
+    password: { $type: String, required: true },
     birthDate: Date,
     image: String,
     bloodGroup: String,
@@ -82,12 +82,12 @@ const UserSchema = new mongoose.Schema<IUserDocument>(
     },
 
     role: {
-      type: String,
-      enum: ["user", "admin", "moderator"],
+      $type: String,
+      enum: ["user", "admin", "moderator", "customer"],
       default: "user",
     },
   },
-  { collection: "users_data" }
+  { collection: "users_data", typeKey: "$type" }
 );
 
 const User = mongoose.model("User", UserSchema);

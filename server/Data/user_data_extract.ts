@@ -1,7 +1,9 @@
-import mongoose from "mongoose";
-import Product from "../models/Product"; // TypeScript resolves the .ts extension
+// TS code for updating url in mongodb
 
-const oldBase = "https://cdn.dummyjson.com";
+import mongoose from "mongoose";
+import User from "../models/User";
+
+const oldBase = "https://dummyjson.com";
 const newBase = "/static/images"; // your new local path
 
 const convertUrl = (url: string) => {
@@ -14,37 +16,20 @@ const convertUrl = (url: string) => {
 const updateImageUrls = async () => {
   await mongoose.connect("mongodb://localhost:27017/product_data");
 
-  const products = await Product.find({});
+  const users = await User.find({});
 
-  for (const product of products) {
+  for (const user of users) {
     let changed = false;
+    console.log(`✅ Updating userId: ${user.userId}`);
+    console.log(`✅ UserID image before update: ${user.image}`);
 
-    // images[]
-    product.images = product.images.map((url: string) => {
-      const newUrl = convertUrl(url);
-      if (newUrl !== url) changed = true;
-      return newUrl;
-    });
-
-    // thumbnail
-    const newThumb = convertUrl(product.thumbnail);
-    if (newThumb !== product.thumbnail) {
-      product.thumbnail = newThumb;
-      changed = true;
-    }
-
-    // meta.qrCode
-    if (product.meta && product.meta.qrCode) {
-      const newQr = convertUrl(product.meta.qrCode);
-      if (newQr !== product.meta.qrCode) {
-        product.meta.qrCode = newQr;
-        changed = true;
-      }
-    }
+    user.image = convertUrl(user.image);
+    changed = true;
+    console.log(`✅ UserID image after update: ${user.image}`);
 
     if (changed) {
-      await product.save();
-      console.log(`✅ Updated productId: ${product.productId}`);
+      await user.save();
+      console.log(`✅ Updated userId: ${user.userId}`);
     }
   }
 
@@ -52,3 +37,94 @@ const updateImageUrls = async () => {
 };
 
 updateImageUrls().catch(console.error);
+
+//JS Getting urls from mongodb and storing in json
+
+// Assuming products is your array of ProductDocument objects
+// const products: any[] = [
+//   // Example objects
+//   // {
+//   //   meta: { qrCode: "QR123" },
+//   //   images: ["img1.jpg", "img2.jpg"],
+//   //   thumbnail: "thumb.jpg"
+//   // }
+// ];
+
+// const fs = require("fs");
+// const users = require("./new_users_hashed.json");
+
+// // Final array to store all values
+// const resultList = [];
+
+// users.forEach((user) => {
+//   // Add thumbnail
+//   if (user.image) {
+//     resultList.push(user.image);
+//   }
+// });
+
+// const filePath = __dirname + "\\user_image_list.json";
+
+// fs.writeFileSync(filePath, JSON.stringify(resultList));
+
+// console.log(resultList);
+
+// js code to dowload images
+
+// const axios = require("axios");
+// const fs = require("fs");
+// const path = require("path");
+
+// // Load URLs from JSON file (or use .txt variant below)
+// const imageUrls = JSON.parse(
+//   fs.readFileSync("Data\\user_image_list.json", "utf-8")
+// );
+
+// // Remove duplicates
+// const uniqueUrls = [...new Set(imageUrls)];
+
+// // Base output folder
+// const baseDir = path.join(__dirname, "static\\images");
+
+// const getLocalPathFromUrl = (imageUrl) => {
+//   const parsedUrl = new URL(imageUrl);
+//   const urlPath = decodeURIComponent(parsedUrl.pathname); // handles %20 or special chars
+//   return path.join(baseDir, urlPath); // full path including folders and filename
+// };
+
+// const ensureDirExists = (filePath) => {
+//   const dir = path.dirname(filePath);
+//   if (!fs.existsSync(dir)) {
+//     fs.mkdirSync(dir, { recursive: true });
+//   }
+// };
+
+// const downloadImage = async (imageUrl) => {
+//   try {
+//     const filePath = getLocalPathFromUrl(imageUrl);
+//     ensureDirExists(filePath);
+
+//     const response = await axios.get(imageUrl, { responseType: "stream" });
+//     const writer = fs.createWriteStream(filePath);
+
+//     response.data.pipe(writer);
+
+//     return new Promise((resolve, reject) => {
+//       writer.on("finish", () => {
+//         console.log(`✅ Downloaded: ${filePath}`);
+//         resolve();
+//       });
+//       writer.on("error", reject);
+//     });
+//   } catch (error) {
+//     console.error(`❌ Failed to download ${imageUrl}: ${error.message}`);
+//   }
+// };
+
+// const downloadAllImages = async () => {
+//   for (const imageUrl of uniqueUrls) {
+//     await downloadImage(imageUrl);
+//   }
+// };
+
+// downloadAllImages();

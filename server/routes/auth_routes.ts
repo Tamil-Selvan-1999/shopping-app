@@ -175,11 +175,7 @@ auth_router.get(
       return res.status(200).send({
         status: "success",
         msg: "Success",
-        data: {
-          firstName: user?.firstName,
-          lastName: user?.lastName,
-          role: user?.role,
-        },
+        data: user,
       });
     } catch (error) {
       return res

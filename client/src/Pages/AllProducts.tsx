@@ -60,9 +60,6 @@ function AllProducts() {
                         />
                         <div className="card-body">
                           <h2 className="card-title">{item.title}</h2>
-                          <p className="card-text">
-                            {item.description.substring(0, 40)}
-                          </p>
                           <button
                             type="button"
                             className="btn btn-primary m-1"

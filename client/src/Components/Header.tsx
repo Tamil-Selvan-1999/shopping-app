@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../interface/interface";
 import { logout } from "../store/loginSlice";
+import { BACKEND_URL } from "../config";
 
 function Header() {
   const dispatch = useDispatch<AppDispatch>();
@@ -25,9 +26,18 @@ function Header() {
         </Link>
         <div className="d-flex align-items-center gap-3">
           {isLoggedIn && (
-            <span className="text-success mb-0">
-              Welcome {profile?.lastName}, {profile?.firstName}
-            </span>
+            <>
+              <span className="text-success mb-0">
+                Welcome {profile?.lastName}, {profile?.firstName}
+              </span>
+              <img
+                src={BACKEND_URL + profile?.image}
+                alt={profile?.firstName + ", " + profile?.lastName}
+                width="32"
+                height="32"
+                className="rounded-circle"
+              />
+            </>
           )}
           {isLoggedIn ? (
             <button className="btn btn-danger btn-sm" onClick={handleLogout}>
