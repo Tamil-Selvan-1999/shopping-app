@@ -1,33 +1,46 @@
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Product, RootState } from "../interface/interface";
 import { BACKEND_URL } from "../config";
+import { useState, useEffect } from "react";
 
 function ProductPage() {
-  const { productId } = useParams();
+  const { category, productId, productSlug } = useParams();
+  const navigate = useNavigate();
 
-  let currentProduct: Product | undefined = undefined;
+  const productData = useSelector((state: RootState) => state.product.items);
+  const [product, setProduct] = useState<Product | null>(null);
 
-  const { items: productData } = useSelector(
-    (state: RootState) => state.product
-  );
+  useEffect(() => {
+    if (!productId || !productData.length) return;
 
-  if (productId) {
-    currentProduct = productData.find(
+    const selected = productData.find(
       (item) => item.productId === parseInt(productId)
     );
-  }
 
-  const discountedPrice = currentProduct
-    ? (
-        currentProduct.price *
-        (1 - currentProduct.discountPercentage / 100)
-      ).toFixed(2)
-    : "0.00";
+    if (selected) {
+      setProduct(selected);
+
+      const expectedSlug = slugify(selected.title);
+
+      if (productSlug !== expectedSlug) {
+        navigate(`/product/${category}/${productId}/${expectedSlug}`, {
+          replace: true,
+        });
+      }
+    }
+  }, [productId, productSlug, category, navigate, productData]);
+
+  if (!product) return <div>Loading...</div>;
+
+  const discountedPrice = (
+    product.price *
+    (1 - product.discountPercentage / 100)
+  ).toFixed(2);
 
   return (
     <div className="container mt-4 mb-5">
-      {currentProduct ? (
+      {product ? (
         <>
           <div className="row g-4">
             {/* Image Carousel */}
@@ -38,7 +51,7 @@ function ProductPage() {
                 data-bs-ride="carousel"
               >
                 <div className="carousel-inner border rounded">
-                  {currentProduct.images.map((img: string, idx: number) => (
+                  {product.images.map((img: string, idx: number) => (
                     <div
                       key={idx}
                       className={`carousel-item ${idx === 0 ? "active" : ""}`}
@@ -73,51 +86,49 @@ function ProductPage() {
 
             {/* Product Info */}
             <div className="col-md-6">
-              <h2>{currentProduct.title}</h2>
-              <p className="text-muted">{currentProduct.description}</p>
+              <h2>{product.title}</h2>
+              <p className="text-muted">{product.description}</p>
 
               <h4>
                 ₹{discountedPrice}{" "}
                 <small className="text-decoration-line-through text-danger ms-2">
-                  ₹{currentProduct.price}
+                  ₹{product.price}
                 </small>
                 <span className="badge bg-success ms-2">
-                  -{currentProduct.discountPercentage}%
+                  -{product.discountPercentage}%
                 </span>
               </h4>
 
               <p>
-                <strong>Rating:</strong> {currentProduct.rating} ★
+                <strong>Rating:</strong> {product.rating} ★
               </p>
               <p>
                 <strong>Availability:</strong>{" "}
                 <span
                   className={
-                    currentProduct.availabilityStatus
-                      .toLowerCase()
-                      .includes("out")
+                    product.availabilityStatus.toLowerCase().includes("out")
                       ? "text-danger"
                       : "text-success"
                   }
                 >
-                  {currentProduct.availabilityStatus}
+                  {product.availabilityStatus}
                 </span>
               </p>
               <p>
-                <strong>Shipping:</strong> {currentProduct.shippingInformation}
+                <strong>Shipping:</strong> {product.shippingInformation}
               </p>
               <p>
-                <strong>Warranty:</strong> {currentProduct.warrantyInformation}
+                <strong>Warranty:</strong> {product.warrantyInformation}
               </p>
               <p>
-                <strong>Return Policy:</strong> {currentProduct.returnPolicy}
+                <strong>Return Policy:</strong> {product.returnPolicy}
               </p>
 
               <button
                 className="btn btn-primary"
-                disabled={currentProduct.stock === 0}
+                disabled={product.stock === 0}
               >
-                {currentProduct.stock > 0 ? "Add to Cart" : "Out of Stock"}
+                {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
               </button>
             </div>
           </div>
@@ -128,28 +139,27 @@ function ProductPage() {
               <h5>Product Details</h5>
               <ul className="list-group">
                 <li className="list-group-item">
-                  <strong>SKU:</strong> {currentProduct.sku}
+                  <strong>SKU:</strong> {product.sku}
                 </li>
                 <li className="list-group-item">
-                  <strong>Brand:</strong> {currentProduct.brand}
+                  <strong>Brand:</strong> {product.brand}
                 </li>
                 <li className="list-group-item">
-                  <strong>Tags:</strong> {currentProduct.tags.join(", ")}
+                  <strong>Tags:</strong> {product.tags.join(", ")}
                 </li>
                 <li className="list-group-item">
-                  <strong>Weight:</strong> {currentProduct.weight} kg
+                  <strong>Weight:</strong> {product.weight} kg
                 </li>
                 <li className="list-group-item">
-                  <strong>Dimensions:</strong> {currentProduct.dimensions.width}{" "}
-                  x {currentProduct.dimensions.height} x{" "}
-                  {currentProduct.dimensions.depth} mm
+                  <strong>Dimensions:</strong> {product.dimensions.width} x{" "}
+                  {product.dimensions.height} x {product.dimensions.depth} mm
                 </li>
                 <li className="list-group-item">
-                  <strong>Barcode:</strong> {currentProduct.meta.barcode}
+                  <strong>Barcode:</strong> {product.meta.barcode}
                 </li>
                 <li className="list-group-item">
                   <img
-                    src={BACKEND_URL + currentProduct.meta.qrCode}
+                    src={BACKEND_URL + product.meta.qrCode}
                     alt="QR Code"
                     style={{ width: "80px" }}
                   />
@@ -159,7 +169,7 @@ function ProductPage() {
 
             <div className="col-lg-6">
               <h5>Customer Reviews</h5>
-              {currentProduct.reviews.map((review: any, idx: number) => (
+              {product.reviews.map((review: any, idx: number) => (
                 <div key={idx} className="border rounded p-2 mb-3">
                   <p className="mb-1 fw-semibold">
                     {review.reviewerName} – {review.rating} ★
@@ -178,6 +188,13 @@ function ProductPage() {
       )}
     </div>
   );
+}
+
+function slugify(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "");
 }
 
 export default ProductPage;

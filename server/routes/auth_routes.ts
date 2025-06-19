@@ -18,6 +18,7 @@ auth_router.post(
       const { username, password } = req.body;
 
       if (!username || !password) {
+        logger.error("Invalid data");
         return res
           .status(400)
           .send({ status: "fail", msg: "Invalid data", data: {} });
@@ -26,6 +27,7 @@ auth_router.post(
       const data = await User.findOne({ username });
 
       if (!data) {
+        logger.error("User not found");
         return res
           .status(404)
           .send({ status: "fail", msg: "User not found", data: {} });
@@ -34,6 +36,7 @@ auth_router.post(
       const pwdMatch = await bcrypt.compare(password, data.password);
 
       if (!pwdMatch) {
+        logger.error("Incorrect Credenrials");
         return res
           .status(401)
           .send({ status: "fail", msg: "Incorrect Credenrials", data: {} });
@@ -63,12 +66,14 @@ auth_router.post(
     try {
       const { username, password, firstName, lastName } = req.body;
       if (!username || !password || !firstName || !lastName) {
+        logger.error("Incorrect data");
         return res
           .status(400)
           .send({ status: "fail", msg: "Incorrect data", data: {} });
       }
       const data = await User.findOne({ username });
       if (data) {
+        logger.error("User Already present");
         return res
           .status(400)
           .send({ status: "fail", msg: "User Already present", data: {} });
@@ -158,6 +163,7 @@ auth_router.post(
         .status(201)
         .send({ status: "success", msg: "Registered successfully", data: {} });
     } catch (error) {
+      logger.error(error);
       return res
         .status(500)
         .send({ status: "fail", msg: "Internal Server Error", data: {} });
@@ -178,6 +184,7 @@ auth_router.get(
         data: user,
       });
     } catch (error) {
+      logger.error(error);
       return res
         .status(500)
         .send({ status: "fail", msg: "Internal server error", data: {} });

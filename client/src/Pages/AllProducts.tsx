@@ -193,10 +193,16 @@ function AllProducts() {
                       <strong>Stock:</strong> {selectedProduct.stock}
                     </p>
                     <Link
-                      to={`/product/${selectedProduct.productId}`}
+                      to={`/product/${selectedProduct.category}/${selectedProduct.productId}/${selectedProduct.title}`}
                       className="btn btn-sm btn-outline-primary mt-2"
                     >
                       Go to Product Page
+                    </Link>
+                    <Link
+                      to={`/category/${selectedProduct.category}`}
+                      className="btn btn-sm btn-outline-primary mt-2"
+                    >
+                      Go to Category Page
                     </Link>
                   </div>
                 </div>

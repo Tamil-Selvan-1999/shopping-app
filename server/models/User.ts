@@ -1,11 +1,12 @@
-import mongoose, { Document } from "mongoose";
+import mongoose, { CallbackError, Document } from "mongoose";
 import { IUser } from "../interface/interface";
+import Counter from "./counter.model";
 
 interface IUserDocument extends IUser, Document {}
 
 const UserSchema = new mongoose.Schema<IUserDocument>(
   {
-    userId: { $type: Number, required: true, unique: true },
+    userId: { $type: Number, unique: true },
     firstName: String,
     lastName: String,
     maidenName: String,
@@ -89,6 +90,25 @@ const UserSchema = new mongoose.Schema<IUserDocument>(
   },
   { collection: "users_data", typeKey: "$type" }
 );
+
+UserSchema.pre("save", async function (next) {
+  const doc = this as IUserDocument;
+
+  if (!doc.isNew) return next();
+
+  try {
+    const counter = await Counter.findByIdAndUpdate(
+      { _id: "userId" },
+      { $inc: { sequence_value: 1 } },
+      { new: true, upsert: true }
+    );
+
+    doc.userId = counter!.sequence_value;
+    next();
+  } catch (err) {
+    next(err as CallbackError);
+  }
+});
 
 const User = mongoose.model("User", UserSchema);
 
