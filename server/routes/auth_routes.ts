@@ -6,6 +6,9 @@ import env from "../config";
 import { logger } from "../logger";
 import verifyToken from "../middleware/authMiddleware";
 import { faker } from "@faker-js/faker";
+import axios from "axios";
+import fs from "fs";
+import path from "path";
 
 const JWT_SECRET_KEY = env.JWT_SECRET_KEY;
 
@@ -79,6 +82,9 @@ auth_router.post(
           .send({ status: "fail", msg: "User Already present", data: {} });
       }
       const hash_pwd = await bcrypt.hash(password, 10);
+      const avatarUrl = faker.image.avatar();
+      const localAvatarPath = await downloadAvatarImage(avatarUrl, username);
+
       await User.create({
         username: username,
         password: hash_pwd,
@@ -95,7 +101,7 @@ auth_router.post(
         )}-${faker.string.numeric(4)}`,
         gender: faker.helpers.arrayElement(["male", "female"]),
         birthDate: faker.date.birthdate({ mode: "age", min: 18, max: 60 }),
-        image: faker.image.avatar(),
+        image: localAvatarPath,
         bloodGroup: faker.helpers.arrayElement(["A+", "B+", "O-", "AB+"]),
         height: faker.number.float({ min: 150, max: 200 }),
         weight: faker.number.float({ min: 45, max: 100 }),
@@ -191,5 +197,34 @@ auth_router.get(
     }
   }
 );
+
+const downloadAvatarImage = async (
+  url: string,
+  username: string
+): Promise<string> => {
+  const filename = path.basename(url); // e.g., "4.jpg"
+  const saveDir = path.join(
+    __dirname,
+    "..",
+    "static",
+    "images",
+    "icon",
+    username
+  );
+  const savePath = path.join(saveDir, filename);
+
+  fs.mkdirSync(saveDir, { recursive: true });
+
+  const response = await axios.get(url, { responseType: "stream" });
+  const writer = fs.createWriteStream(savePath);
+  response.data.pipe(writer);
+
+  await new Promise<void>((resolve, reject) => {
+    writer.on("finish", resolve);
+    writer.on("error", reject);
+  });
+
+  return `/static/images/icon/${username}/${filename}`;
+};
 
 export default auth_router;
