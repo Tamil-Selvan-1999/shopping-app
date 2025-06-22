@@ -202,18 +202,28 @@ const downloadAvatarImage = async (
   url: string,
   username: string
 ): Promise<string> => {
-  const filename = path.basename(url); // e.g., "4.jpg"
+  const filename = path.basename(url);
   const saveDir = path.join(
-    __dirname,
-    "..",
+    process.cwd(),
     "static",
     "images",
     "icon",
     username
   );
+
   const savePath = path.join(saveDir, filename);
 
-  fs.mkdirSync(saveDir, { recursive: true });
+  console.log("Download URL:", url);
+  console.log("Saving to directory:", saveDir);
+  console.log("Saving as file:", savePath);
+
+  try {
+    fs.mkdirSync(saveDir, { recursive: true });
+    console.log("Directory created successfully.");
+  } catch (err) {
+    console.error("Failed to create directory:", err);
+    throw err;
+  }
 
   const response = await axios.get(url, { responseType: "stream" });
   const writer = fs.createWriteStream(savePath);
