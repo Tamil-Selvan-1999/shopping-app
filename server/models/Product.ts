@@ -1,10 +1,11 @@
-import mongoose from "mongoose";
+import mongoose, { CallbackError } from "mongoose";
 import {
   Dimensions,
   Meta,
   ProductDocument,
   Review,
 } from "../interface/interface";
+import Counter from "./counter.model";
 
 const ReviewSchema = new mongoose.Schema<Review>(
   {
@@ -63,6 +64,25 @@ const ProductSchema = new mongoose.Schema<ProductDocument>(
   },
   { collection: "products_data" }
 );
+
+ProductSchema.pre("save", async function (next) {
+  const doc = this as ProductDocument;
+
+  if (!doc.isNew) return next();
+
+  try {
+    const counter = await Counter.findByIdAndUpdate(
+      { _id: "productId" },
+      { $inc: { sequence_value: 1 } },
+      { new: true, upsert: true }
+    );
+
+    doc.productId = counter!.sequence_value;
+    next();
+  } catch (err) {
+    next(err as CallbackError);
+  }
+});
 
 const Product = mongoose.model("Product", ProductSchema);
 

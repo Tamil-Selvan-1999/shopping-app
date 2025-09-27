@@ -22,4 +22,23 @@ product_router.get(
   }
 );
 
+product_router.post(
+  "/products/add",
+  async (req: Request, res: Response): Promise<any> => {
+    try {
+      const data = req.body;
+      let productData = await new Product(data);
+      if (productData) {
+        await productData.save();
+      }
+      return res
+        .status(201)
+        .send({ status: "success", msg: "success", data: productData });
+    } catch (error) {
+      logger.error(error);
+      return res.status(400).send({ status: "fail", msg: "Error", data: {} });
+    }
+  }
+);
+
 export default product_router;

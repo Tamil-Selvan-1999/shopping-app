@@ -1,10 +1,8 @@
-import mongoose, { CallbackError, Document } from "mongoose";
+import mongoose, { CallbackError } from "mongoose";
 import { IUser } from "../interface/interface";
 import Counter from "./counter.model";
 
-interface IUserDocument extends IUser, Document {}
-
-const UserSchema = new mongoose.Schema<IUserDocument>(
+const UserSchema = new mongoose.Schema<IUser>(
   {
     userId: { $type: Number, unique: true },
     firstName: String,
@@ -92,7 +90,7 @@ const UserSchema = new mongoose.Schema<IUserDocument>(
 );
 
 UserSchema.pre("save", async function (next) {
-  const doc = this as IUserDocument;
+  const doc = this as IUser;
 
   if (!doc.isNew) return next();
 

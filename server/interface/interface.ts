@@ -46,7 +46,7 @@ export interface ProductDocument extends Document {
   thumbnail: string;
 }
 
-export interface IUser {
+export interface IUser extends Document {
   userId: number;
   firstName: string;
   lastName: string;
